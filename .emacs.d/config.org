@@ -1,4 +1,5 @@
-* Podstawowe funkcje menadøera pakietÛw
+## -*- coding: utf-8;mode: org;  -*-
+* Podstawowe funkcje menad≈ºera pakiet√≥w
 ** Pakiet =use=
 #+BEGIN_SRC emacs-lisp
   (unless (package-installed-p 'use-package)
@@ -11,13 +12,13 @@
     :ensure t)
 #+END_SRC
 * Podstawowe ustawienia Emacs'a
-** Wy≥±czenie kontrolek UI
+** Wy≈ÇƒÖczenie kontrolek UI
 #+BEGIN_SRC emacs-lisp
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
 #+END_SRC
-** Wy≥±cznie ekranu pocz±tkowego
+** Wy≈ÇƒÖcznie ekranu poczƒÖtkowego
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-startup-message t)
 #+END_SRC
@@ -25,13 +26,13 @@
 #+BEGIN_SRC emacs-lisp
   (defalias 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
-** Auto prze≥adowywanie zmienionych plikÛw
+** Auto prze≈Çadowywanie zmienionych plik√≥w
 #+BEGIN_SRC emacs-lisp
   (global-auto-revert-mode)
 #+END_SRC
 * Dodatkowe funkcje
-** Kopiowanie ca≥ej linii
-   Kopiuje ca≥± liniÍ i dodaje j± do =kill-ring=. Pod≥±czone pod
+** Kopiowanie ca≈Çej linii
+   Kopiuje ca≈ÇƒÖ liniƒô i dodaje jƒÖ do =kill-ring=. Pod≈ÇƒÖczone pod
    klawisz =C-c C-k=.
 #+BEGIN_SRC emacs-lisp
     (defun copy-line (arg)
@@ -57,7 +58,7 @@
   (global-set-key "\C-c\C-k" 'copy-line)
 #+END_SRC
 ** Wstawianie linii nad i pod kursorem
-Wstawia liniÍ nad =M-p= lub pod =M-n= kursorem nie ≥ami±c przy tym
+Wstawia liniƒô nad =M-p= lub pod =M-n= kursorem nie ≈ÇamiƒÖc przy tym
 linii, i przesuwa kursor do nowej linii.
 #+BEGIN_SRC emacs-lisp
   (defun insert-line-below ()
@@ -84,13 +85,13 @@ linii, i przesuwa kursor do nowej linii.
      (interactive)
      (find-file "~/.emacs.d/config.org"))
  #+END_SRC
-*** Prze≥adowanie konfigu
+*** Prze≈Çadowanie konfigu
 #+BEGIN_SRC emacs-lisp
   (defun config-reload()
     (interactive)
     (org-babel-load-file (expand-file-name "~/.emacs.d/config.org")))
 #+END_SRC
-** Bardziej normalne przeskok do przodu/ty≥u o s≥owo
+** Bardziej normalne przeskok do przodu/ty≈Çu o s≈Çowo
 #+BEGIN_SRC emacs-lisp
   (defun geosoft-forward-word ()
      ;; Move one word forward. Leave the pointer at start of word
@@ -117,7 +118,7 @@ linii, i przesuwa kursor do nowej linii.
   (global-set-key (kbd "M-b") 'geosoft-backward-word)
 #+END_SRC
 ** Lepsze dzielenie okien
-   Dzielenie okien oraz przesuniÍcie kursora do nowego okna
+   Dzielenie okien oraz przesuniƒôcie kursora do nowego okna
 #+BEGIN_SRC emacs-lisp
   (defun split-and-follow-window-horizontally()
     (interactive)
@@ -131,17 +132,17 @@ linii, i przesuwa kursor do nowej linii.
     (balance-windows)
     (other-window 1))
 #+END_SRC
-** Lepsze kasowanie ca≥ej linii
-   kasuje linie i naprawia puste znaki - przydatne z ≥±czeniem do nastÍpnej linii
+** Lepsze kasowanie ca≈Çej linii
+   kasuje linie i naprawia puste znaki - przydatne z ≈ÇƒÖczeniem do nastƒôpnej linii
 #+BEGIN_SRC emacs-lisp
   (defun radekg-kill-line()
     (interactive)
     (kill-line)
     (fixup-whitespace))
 #+END_SRC
-** Lepsze ≥±czenie linii
-   Funkcja do ≥±czenia linii z nastÍpn±. Nie przesuwa kursora /KOMENTARZ: moøe jednak powinna
-   przesuwaÊ punkt na koniec linii?/
+** Lepsze ≈ÇƒÖczenie linii
+   Funkcja do ≈ÇƒÖczenia linii z nastƒôpnƒÖ. Nie przesuwa kursora /KOMENTARZ: mo≈ºe jednak powinna
+   przesuwaƒá punkt na koniec linii?/
 #+BEGIN_SRC emacs-lisp
   (defun radekg-join-line()
     (interactive)
@@ -156,13 +157,13 @@ linii, i przesuwa kursor do nowej linii.
     (interactive)
     (kill-buffer (current-buffer)))
 #+END_SRC
-* Obej∂cia problemÛw
-** Problem z wydajno∂ci± czcionek
+* Obej≈õcia problem√≥w
+** Problem z wydajno≈õciƒÖ czcionek
    Odczuwalny bardzo przy korzystaniu z pakietu =org-bullets=
 #+BEGIN_SRC emacs-lisp
 (setq inhibit-compacting-font-caches 't)
 #+END_SRC
-* Wygl±d
+* WyglƒÖd
 ** Motyw
 #+BEGIN_SRC emacs-lisp
   ;;    (use-package zenburn-theme
@@ -176,12 +177,12 @@ linii, i przesuwa kursor do nowej linii.
     :init
     (load-theme 'gruvbox-dark-medium))
 #+END_SRC
-** Przeºroczysto∂Ê
+** Prze≈∫roczysto≈õƒá
 #+BEGIN_SRC emacs-lisp
 (set-frame-parameter (selected-frame) 'alpha '(94))
 #+END_SRC
 ** Czcionka
-¨rÛd≥a czcionki na [[https://github.com/adobe-fonts/source-code-pro][GitHub]]
+≈πr√≥d≈Ça czcionki na [[https://github.com/adobe-fonts/source-code-pro][GitHub]]
 #+BEGIN_SRC emacs-lisp
   (set-face-attribute 'default nil
 		      :font "Source Code Pro"
@@ -189,8 +190,8 @@ linii, i przesuwa kursor do nowej linii.
 		      :width 'normal
 		      :height 95)
 #+END_SRC
-** Dodatkowe /upiÍkszenia/
-   - Pod∂wietlanie linii
+** Dodatkowe /upiƒôkszenia/
+   - Pod≈õwietlanie linii
    - Zamiana np. symbolu lambda
 #+BEGIN_SRC emacs-lisp
   (global-hl-line-mode t)
@@ -202,9 +203,9 @@ linii, i przesuwa kursor do nowej linii.
   (add-to-list 'default-frame-alist '(height . 55))
   (add-to-list 'default-frame-alist '(width . 220))
 #+END_SRC
-** Kolumna przepe≥nienia (=fill=)
-   Kolumna, po ktÛrej nastÍpuje przepe≥nienie i nowa linia. Ca≥e paragraphy
-   moøna ponownie formatowaÊ korzystaj±c z =M-q=.
+** Kolumna przepe≈Çnienia (=fill=)
+   Kolumna, po kt√≥rej nastƒôpuje przepe≈Çnienie i nowa linia. Ca≈Çe paragraphy
+   mo≈ºna ponownie formatowaƒá korzystajƒÖc z =M-q=.
 #+BEGIN_SRC emacs-lisp
   (setq-default fill-column '100)
 #+END_SRC
@@ -223,16 +224,16 @@ linii, i przesuwa kursor do nowej linii.
   (setq org-agenda-skip-unavailable-files t)
   (setq org-agenda-start-on-weekday nil)
 #+END_SRC
-*** Definicja polskich s≥Ûw kluczowych
-    Zostawiamy =TODO= bo to zbyt czÍsto uøywane s≥owo kluczowy w org.
+*** Definicja polskich s≈Ç√≥w kluczowych
+    Zostawiamy =TODO= bo to zbyt czƒôsto u≈ºywane s≈Çowo kluczowy w org.
 #+BEGIN_SRC emacs-lisp
 (setq org-todo-keywords
       (quote (
-	      (sequence "TODO(t)" "ROZPOCZ TE(r)" "TERAZ(t)" "OCZEKUJE(o)" "WSTRZYMANE(s)" "KIEDY¶(k)" "|" "ZAKO—CZONE(z)" "ANULOWANE(a)" )
+	      (sequence "TODO(t)" "ROZPOCZƒòTE(r)" "TERAZ(t)" "OCZEKUJE(o)" "WSTRZYMANE(s)" "KIEDY≈ö(k)" "|" "ZAKO≈ÉCZONE(z)" "ANULOWANE(a)" )
        ))
 )
 #+END_SRC
-*** Zadania z dat± i =TODO= powinny siÍ znaleºÊ na li∂cie rzeczy do zrobienia
+*** Zadania z datƒÖ i =TODO= powinny siƒô znale≈∫ƒá na li≈õcie rzeczy do zrobienia
 #+BEGIN_SRC emacs-lisp
   (setq org-agenda-todo-ignore-with-date nil)
 #+END_SRC
@@ -241,11 +242,11 @@ linii, i przesuwa kursor do nowej linii.
   (setq european-calendar-style t)
   (setq calendar-week-start-day 1)
 #+END_SRC
-*** Zadania zaplanowane na przysz≥o∂Ê nie pojawi± siÍ na li∂cie =TODO=
+*** Zadania zaplanowane na przysz≈Ço≈õƒá nie pojawiƒÖ siƒô na li≈õcie =TODO=
 #+BEGIN_SRC emacs-lisp
   (setq org-agenda-todo-ignore-scheduled (quote future))
 #+END_SRC
-*** Zadania z =DEADLINE=, ktÛre koÒcz± siÍ /nied≥ugo/ znajd± siÍ na li∂cie =TODO=.
+*** Zadania z =DEADLINE=, kt√≥re ko≈ÑczƒÖ siƒô /nied≈Çugo/ znajdƒÖ siƒô na li≈õcie =TODO=.
 #+BEGIN_SRC emacs-lisp
   (setq org-agenda-todo-ignore-deadlines (quote far))
 #+END_SRC
@@ -260,16 +261,16 @@ linii, i przesuwa kursor do nowej linii.
 #+BEGIN_SRC emacs-lisp
   (setq org-return-follows-link 't)
 #+END_SRC
-*** Brak pustych linii przed g≥Ûwnymi punktami
+*** Brak pustych linii przed g≈Ç√≥wnymi punktami
 #+BEGIN_SRC emacs-lisp
 (setq org-blank-before-new-entry
       '((heading . nil) (plain-list-item . nil)))
 #+END_SRC
-*** Przej∂cie do pocz±tku, koÒca linii ignoruje gwizadki itp.
+*** Przej≈õcie do poczƒÖtku, ko≈Ñca linii ignoruje gwizadki itp.
 #+BEGIN_SRC emacs-lisp
   (setq org-special-ctrl-a/e t)
 #+END_SRC
-*** Automatyczne zapisywanie wszystkich plikÛw =.org=
+*** Automatyczne zapisywanie wszystkich plik√≥w =.org=
 #+BEGIN_SRC emacs-lisp
   (add-hook 'after-init-hook
 	    (lambda ()
@@ -298,7 +299,7 @@ linii, i przesuwa kursor do nowej linii.
       ("C-x r b" . helm-bookmarks)
   )
 #+END_SRC
-*** =TAB= powinien uzupe≥niaÊ wpisy, a nie pokazywaÊ pomoc
+*** =TAB= powinien uzupe≈Çniaƒá wpisy, a nie pokazywaƒá pomoc
 #+BEGIN_SRC emacs-lisp
   (define-key helm-find-files-map "\t" 'helm-execute-persistent-action)
 #+END_SRC
@@ -311,9 +312,9 @@ linii, i przesuwa kursor do nowej linii.
 #+END_SRC
 ** Pakiet =Yasnippet=
    Snippety. Uruchamiany przez napisanie w buforze /nazwy/ snippetu i
-   naci∂niÍcie klawisza =TAB=. Nowe snippety moøna umieszczaÊ w katalogu
-   =~/.emacs.d/snippets/<nazwa_trybu>=. WiÍcej informacji na stronie
-   [[http://joaotavora.github.io/yasnippet/snippet-development.html][Jak pisaÊ snippety]].
+   naci≈õniƒôcie klawisza =TAB=. Nowe snippety mo≈ºna umieszczaƒá w katalogu
+   =~/.emacs.d/snippets/<nazwa_trybu>=. Wiƒôcej informacji na stronie
+   [[http://joaotavora.github.io/yasnippet/snippet-development.html][Jak pisaƒá snippety]].
 #+BEGIN_SRC emacs-lisp
   (use-package yasnippet
     :ensure t 
@@ -321,7 +322,7 @@ linii, i przesuwa kursor do nowej linii.
     (yas-global-mode 1))
 #+END_SRC
 ** Pakiet =Beacon=
-   Przy prze≥±czaniu okien pomaga znaleºÊ kursor.
+   Przy prze≈ÇƒÖczaniu okien pomaga znale≈∫ƒá kursor.
 #+BEGIN_SRC emacs-lisp
   (use-package beacon
     :ensure t
@@ -352,7 +353,7 @@ linii, i przesuwa kursor do nowej linii.
       ))
 #+END_SRC
 ** Pakiet =Undo Tree=
-   WiÍcej informacji na [[https://elpa.gnu.org/packages/undo-tree.html][Stronie elpy]]
+   Wiƒôcej informacji na [[https://elpa.gnu.org/packages/undo-tree.html][Stronie elpy]]
 *** Instalacja
 #+BEGIN_SRC emacs-lisp
   (use-package undo-tree
@@ -360,7 +361,7 @@ linii, i przesuwa kursor do nowej linii.
     :init
     (global-undo-tree-mode))
 #+END_SRC
-*** SkrÛty klawiszowe
+*** Skr√≥ty klawiszowe
     * =C-_ C-/= (`undo-tree-undo') Undo changes.
     * =M-_ C-?= (`undo-tree-redo') Redo changes.
     * =undo-tree-switch-branch= Switch undo-tree branch.  (What does this
@@ -372,28 +373,28 @@ linii, i przesuwa kursor do nowej linii.
     * =C-x r U= (`undo-tree-restore-state-from-register') Restore buffer
       state from register.
 ** Pakiet =Powershell=
-   Wprowadza tryb do edycji plikÛw =.ps1= czyli =Powershell=. Przynajmniej
-   tak± mam nadziejÍ
+   Wprowadza tryb do edycji plik√≥w =.ps1= czyli =Powershell=. Przynajmniej
+   takƒÖ mam nadziejƒô
 *** Instalacja
 #+BEGIN_SRC emacs-lisp
   (use-package powershell
     :ensure t)
 #+END_SRC
 ** Pakiet =magit=
-   Pakiet do obs≥ugi =git= w emacs
+   Pakiet do obs≈Çugi =git= w emacs
 #+BEGIN_SRC emacs-lisp
   (use-package magit
     :ensure t)
 #+END_SRC
-Aby pro∂by o has≥o dzia≥a≥y pod *Windows* musimy skonfigurowaÊ gita by uøywa≥ GUI do zapytaÒ. Warto
-w tym miejscu wspomnieÊ o tym, øeby skonfigurowaÊ *Git* do zapamiÍtywania hase≥ poleceniem =git
+Aby pro≈õby o has≈Ço dzia≈Ça≈Çy pod *Windows* musimy skonfigurowaƒá gita by u≈ºywa≈Ç GUI do zapyta≈Ñ. Warto
+w tym miejscu wspomnieƒá o tym, ≈ºeby skonfigurowaƒá *Git* do zapamiƒôtywania hase≈Ç poleceniem =git
 config --global credential.helper wincred=
 
 #+BEGIN_SRC emacs-lisp
   (setenv "GIT_ASKPASS" "git-gui--askpass")
 #+END_SRC
 ** Pakiet =avy=
-   =M-s= szuka litery na ekranie. Pozwala na szybkie przemieszczenie siÍ do
+   =M-s= szuka litery na ekranie. Pozwala na szybkie przemieszczenie siƒô do
    tej litery.
 #+BEGIN_SRC emacs-lisp
   (use-package avy
@@ -403,7 +404,7 @@ config --global credential.helper wincred=
     ("M-S" . avy-goto-char-timer))
 #+END_SRC
 ** Pakiet =autocomplete=
-Dope≥nianie tekstu
+Dope≈Çnianie tekstu
 #+BEGIN_SRC emacs-lisp
   (use-package auto-complete
     :ensure t
@@ -414,8 +415,8 @@ Dope≥nianie tekstu
       ))
 #+END_SRC
 ** Pakiet =csharpmode=
-   Do obs≥ugi strasznego jÍzyka =C#=
-   *Wygl±da na to, øe zosta≥ usuniÍty!*
+   Do obs≈Çugi strasznego jƒôzyka =C#=
+   *WyglƒÖda na to, ≈ºe zosta≈Ç usuniƒôty!*
 #+BEGIN_SRC emacs-lisp
   ;; (use-package csharp-mode
   ;;   :ensure t)
@@ -429,7 +430,7 @@ Dope≥nianie tekstu
     (global-flycheck-mode t))
 #+END_SRC
 ** Pakiet =jedi=
-   Pakiet uzupe≥niaj±cy dla =Python=.
+   Pakiet uzupe≈ÇniajƒÖcy dla =Python=.
 #+BEGIN_SRC emacs-lisp
   (use-package jedi
     :ensure t
@@ -439,7 +440,7 @@ Dope≥nianie tekstu
 
 #+END_SRC
 ** Pakiet =highlight-symbol=
-   Ekwiwalent vimowego =*= oraz =#= + pod∂wietlanie symbolu
+   Ekwiwalent vimowego =*= oraz =#= + pod≈õwietlanie symbolu
 #+BEGIN_SRC emacs-lisp
   (use-package highlight-symbol
     :ensure t
@@ -463,7 +464,7 @@ Dope≥nianie tekstu
 ** Pakiet =company=
 Podpowiadacz tekstu w Emacs
 [[http://company-mode.github.io/][Link do githuba]]
-*Uwaga* - Na razie bardzo wkurzaj±cy. Na razie lepiej uøywaÊ [[Pakiet =autocomplete=][Autocomplete]]
+*Uwaga* - Na razie bardzo wkurzajƒÖcy. Na razie lepiej u≈ºywaƒá [[Pakiet =autocomplete=][Autocomplete]]
 =#+BEGIN_SRC emacs-lisp=
   (use-package company
     :ensure t
@@ -471,7 +472,7 @@ Podpowiadacz tekstu w Emacs
     (add-hook 'after-init-hook 'global-company-mode))
 =#+END_SRC=
 ** Pakiet =spaceline=
-£adny status bar w emacsie
+≈Åadny status bar w emacsie
 #+BEGIN_SRC emacs-lisp
   (use-package spaceline
     :ensure t
@@ -528,7 +529,7 @@ Ukrywa minor mode'y w statusie.
     (global-set-key (kbd "C-=") 'er/expand-region))
 #+END_SRC
 ** Pakiet =neotree=
-Drzewo katalogÛw. W≥±czanie/Wy≥±czanie za pomoc± klawisza =F8=
+Drzewo katalog√≥w. W≈ÇƒÖczanie/Wy≈ÇƒÖczanie za pomocƒÖ klawisza =F8=
 #+BEGIN_SRC emacs-lisp
   (use-package neotree
     :ensure t
@@ -540,11 +541,11 @@ Drzewo katalogÛw. W≥±czanie/Wy≥±czanie za pomoc± klawisza =F8=
 
 #+END_SRC
 * Mapowanie klawiszy
-  - =C-c c e= - otwÛrz config
-  - =C-c c r= - prze≥aduj config
-  - =C-M-S-k= - kopiuje do =killring= ca≥± liniÍ
+  - =C-c c e= - otw√≥rz config
+  - =C-c c r= - prze≈Çaduj config
+  - =C-M-S-k= - kopiuje do =killring= ca≈ÇƒÖ liniƒô
   - =C-S-r= - przywraca plik
-  - =C-M-k= - ≥±czy liniÍ z nastÍpn±
+  - =C-M-k= - ≈ÇƒÖczy liniƒô z nastƒôpnƒÖ
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-S-k") 'kill-whole-line)
   (global-set-key (kbd "C-M-S-k") 'copy-line)
@@ -559,7 +560,7 @@ Drzewo katalogÛw. W≥±czanie/Wy≥±czanie za pomoc± klawisza =F8=
  #+END_SRC 
 *** Tryb org
 **** Mapowanie klawiszy (lokalne)
-     Je∂li przejdziemy do ºrÛd≥a linku, skrÛt =C-M-b= pozwoli wrÛciÊ do
+     Je≈õli przejdziemy do ≈∫r√≥d≈Ça linku, skr√≥t =C-M-b= pozwoli wr√≥ciƒá do
      oryginalnej pozycji.
  #+BEGIN_SRC emacs-lisp
    (define-key org-mode-map (kbd "C-M-b") 'org-mark-ring-goto)
@@ -567,8 +568,8 @@ Drzewo katalogÛw. W≥±czanie/Wy≥±czanie za pomoc± klawisza =F8=
 **** Mapowanie klawiszy (globalne)
      Globalne ustawienia klawiszy dla =org=.
      - =C-c l= dodaje nowy link
-     - =C-c a= otwiera agendÍ
-     - =F6= pozwala dodaÊ do =org-capture=
+     - =C-c a= otwiera agendƒô
+     - =F6= pozwala dodaƒá do =org-capture=
  #+BEGIN_SRC emacs-lisp
    (global-set-key "\C-cl" 'org-store-link)
    (global-set-key "\C-ca" 'org-agenda)
