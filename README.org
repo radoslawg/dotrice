@@ -1,0 +1,3 @@
+* Config Files
+Various config files that I have to synchronize between computers I work on.
+Especially [[file:.emacs.d/][Emacs]] configuration could be useful for you. :)

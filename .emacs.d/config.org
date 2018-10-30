@@ -1,0 +1,583 @@
+* Podstawowe funkcje menad¿era pakietów
+** Pakiet =use=
+#+BEGIN_SRC emacs-lisp
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
+#+END_SRC
+** Pakiet =try=
+#+BEGIN_SRC emacs-lisp
+  (use-package try
+    :ensure t)
+#+END_SRC
+* Podstawowe ustawienia Emacs'a
+** Wy³±czenie kontrolek UI
+#+BEGIN_SRC emacs-lisp
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+  (scroll-bar-mode -1)
+#+END_SRC
+** Wy³±cznie ekranu pocz±tkowego
+#+BEGIN_SRC emacs-lisp
+  (setq inhibit-startup-message t)
+#+END_SRC
+** Zamiana pytania =yes/no= na =y/n=
+#+BEGIN_SRC emacs-lisp
+  (defalias 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+** Auto prze³adowywanie zmienionych plików
+#+BEGIN_SRC emacs-lisp
+  (global-auto-revert-mode)
+#+END_SRC
+* Dodatkowe funkcje
+** Kopiowanie ca³ej linii
+   Kopiuje ca³± liniê i dodaje j± do =kill-ring=. Pod³±czone pod
+   klawisz =C-c C-k=.
+#+BEGIN_SRC emacs-lisp
+    (defun copy-line (arg)
+        "Copy lines (as many as prefix argument) in the kill ring.
+          Ease of use features: - Move to start of next line.  -
+          Appends the copy on sequential calls.  - Use newline as
+          last char even on the last line of the buffer.  - If region
+          is active, copy its lines."
+        (interactive "p")
+        (let ((beg (line-beginning-position))
+              (end (line-end-position arg)))
+          (when mark-active
+            (if (> (point) (mark))
+                (setq beg (save-excursion (goto-char (mark)) (line-beginning-position)))
+              (setq end (save-excursion (goto-char (mark)) (line-end-position)))))
+          (if (eq last-command 'copy-line)
+              (kill-append (buffer-substring beg end) (< end beg))
+            (kill-ring-save beg end)))
+        (kill-append "\n" nil)
+        (beginning-of-line (or (and arg (1+ arg)) 2))
+        (if (and arg (not (= 1 arg))) (message "%d lines copied" arg)))
+
+  (global-set-key "\C-c\C-k" 'copy-line)
+#+END_SRC
+** Wstawianie linii nad i pod kursorem
+Wstawia liniê nad =M-p= lub pod =M-n= kursorem nie ³ami±c przy tym
+linii, i przesuwa kursor do nowej linii.
+#+BEGIN_SRC emacs-lisp
+  (defun insert-line-below ()
+    (interactive)
+    (move-end-of-line nil)
+    (open-line 1)
+    (next-line))
+
+  (defun insert-line-above ()
+    (interactive)
+    (move-beginning-of-line nil)
+    (newline-and-indent)
+    (indent-according-to-mode)
+    (previous-line))
+
+  (global-set-key (kbd "M-n") 'insert-line-below)
+  (global-set-key (kbd "M-p") 'insert-line-above)
+
+#+END_SRC
+** Konfig
+*** Otwarcie pliku z konfigiem
+ #+BEGIN_SRC emacs-lisp
+   (defun config-visit()
+     (interactive)
+     (find-file "~/.emacs.d/config.org"))
+ #+END_SRC
+*** Prze³adowanie konfigu
+#+BEGIN_SRC emacs-lisp
+  (defun config-reload()
+    (interactive)
+    (org-babel-load-file (expand-file-name "~/.emacs.d/config.org")))
+#+END_SRC
+** Bardziej normalne przeskok do przodu/ty³u o s³owo
+#+BEGIN_SRC emacs-lisp
+  (defun geosoft-forward-word ()
+     ;; Move one word forward. Leave the pointer at start of word
+     ;; instead of emacs default end of word. Treat _ as part of word
+     (interactive)
+     (forward-char 1)
+     (backward-word 1)
+     (forward-word 2)
+     (backward-word 1)
+     (backward-char 1)
+     (cond ((looking-at "_") (forward-char 1) (geosoft-forward-word))
+	   (t (forward-char 1))))
+
+  (defun geosoft-backward-word ()
+     ;; Move one word backward. Leave the pointer at start of word
+     ;; Treat _ as part of word
+     (interactive)
+     (backward-word 1)
+     (backward-char 1)
+     (cond ((looking-at "_") (geosoft-backward-word))
+	   (t (forward-char 1))))
+
+  (global-set-key (kbd "M-f") 'geosoft-forward-word)
+  (global-set-key (kbd "M-b") 'geosoft-backward-word)
+#+END_SRC
+** Lepsze dzielenie okien
+   Dzielenie okien oraz przesuniêcie kursora do nowego okna
+#+BEGIN_SRC emacs-lisp
+  (defun split-and-follow-window-horizontally()
+    (interactive)
+    (split-window-below)
+    (balance-windows)
+    (other-window 1))
+
+  (defun split-and-follow-window-vertically()
+    (interactive)
+    (split-window-right)
+    (balance-windows)
+    (other-window 1))
+#+END_SRC
+** Lepsze kasowanie ca³ej linii
+   kasuje linie i naprawia puste znaki - przydatne z ³±czeniem do nastêpnej linii
+#+BEGIN_SRC emacs-lisp
+  (defun radekg-kill-line()
+    (interactive)
+    (kill-line)
+    (fixup-whitespace))
+#+END_SRC
+** Lepsze ³±czenie linii
+   Funkcja do ³±czenia linii z nastêpn±. Nie przesuwa kursora /KOMENTARZ: mo¿e jednak powinna
+   przesuwaæ punkt na koniec linii?/
+#+BEGIN_SRC emacs-lisp
+  (defun radekg-join-line()
+    (interactive)
+    (save-excursion
+      (join-line 1)
+      )
+    )
+#+END_SRC
+** Zawsze usuwaj obecny bufor
+#+BEGIN_SRC emacs-lisp
+  (defun kill-curr-buffer ()
+    (interactive)
+    (kill-buffer (current-buffer)))
+#+END_SRC
+* Obej¶cia problemów
+** Problem z wydajno¶ci± czcionek
+   Odczuwalny bardzo przy korzystaniu z pakietu =org-bullets=
+#+BEGIN_SRC emacs-lisp
+(setq inhibit-compacting-font-caches 't)
+#+END_SRC
+* Wygl±d
+** Motyw
+#+BEGIN_SRC emacs-lisp
+  ;;    (use-package zenburn-theme
+  ;;      :ensure t)
+  ;; (use-package nord-theme
+  ;;   :ensure t
+  ;;   :init
+  ;;   (load-theme 'nord t))
+  (use-package gruvbox-theme
+    :ensure t
+    :init
+    (load-theme 'gruvbox-dark-medium))
+#+END_SRC
+** Prze¼roczysto¶æ
+#+BEGIN_SRC emacs-lisp
+(set-frame-parameter (selected-frame) 'alpha '(94))
+#+END_SRC
+** Czcionka
+¬ród³a czcionki na [[https://github.com/adobe-fonts/source-code-pro][GitHub]]
+#+BEGIN_SRC emacs-lisp
+  (set-face-attribute 'default nil
+		      :font "Source Code Pro"
+		      :weight 'normal
+		      :width 'normal
+		      :height 95)
+#+END_SRC
+** Dodatkowe /upiêkszenia/
+   - Pod¶wietlanie linii
+   - Zamiana np. symbolu lambda
+#+BEGIN_SRC emacs-lisp
+  (global-hl-line-mode t)
+  (global-prettify-symbols-mode t)
+#+END_SRC
+** Rozmiary okna
+#+BEGIN_SRC emacs-lisp
+  (when window-system (set-frame-size (selected-frame) 220 55))
+  (add-to-list 'default-frame-alist '(height . 55))
+  (add-to-list 'default-frame-alist '(width . 220))
+#+END_SRC
+** Kolumna przepe³nienia (=fill=)
+   Kolumna, po której nastêpuje przepe³nienie i nowa linia. Ca³e paragraphy
+   mo¿na ponownie formatowaæ korzystaj±c z =M-q=.
+#+BEGIN_SRC emacs-lisp
+  (setq-default fill-column '100)
+#+END_SRC
+* Pakiety
+** Pakiet =Org=
+*** Instalacja
+#+BEGIN_SRC emacs-lisp
+  (use-package org
+    :ensure t)
+#+END_SRC
+*** Podstawowe ustawienia
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'org-mode-hook (lambda() (auto-fill-mode 1)))
+  (setq org-hide-leading-stars 't)
+  (setq org-directory "~/org/")
+  (setq org-agenda-skip-unavailable-files t)
+  (setq org-agenda-start-on-weekday nil)
+#+END_SRC
+*** Definicja polskich s³ów kluczowych
+    Zostawiamy =TODO= bo to zbyt czêsto u¿ywane s³owo kluczowy w org.
+#+BEGIN_SRC emacs-lisp
+(setq org-todo-keywords
+      (quote (
+	      (sequence "TODO(t)" "ROZPOCZÊTE(r)" "TERAZ(t)" "OCZEKUJE(o)" "WSTRZYMANE(s)" "KIEDY¦(k)" "|" "ZAKOÑCZONE(z)" "ANULOWANE(a)" )
+       ))
+)
+#+END_SRC
+*** Zadania z dat± i =TODO= powinny siê znale¼æ na li¶cie rzeczy do zrobienia
+#+BEGIN_SRC emacs-lisp
+  (setq org-agenda-todo-ignore-with-date nil)
+#+END_SRC
+*** Ustawienia kalendarza europejskiego
+#+BEGIN_SRC emacs-lisp
+  (setq european-calendar-style t)
+  (setq calendar-week-start-day 1)
+#+END_SRC
+*** Zadania zaplanowane na przysz³o¶æ nie pojawi± siê na li¶cie =TODO=
+#+BEGIN_SRC emacs-lisp
+  (setq org-agenda-todo-ignore-scheduled (quote future))
+#+END_SRC
+*** Zadania z =DEADLINE=, które koñcz± siê /nied³ugo/ znajd± siê na li¶cie =TODO=.
+#+BEGIN_SRC emacs-lisp
+  (setq org-agenda-todo-ignore-deadlines (quote far))
+#+END_SRC
+*** Pakiet =org-bullets=
+#+BEGIN_SRC emacs-lisp
+  (use-package org-bullets
+    :ensure t
+    :config
+    (add-hook 'org-mode-hook (lambda() (org-bullets-mode 1))))
+#+END_SRC
+*** Enter /wchodzi/ w linki
+#+BEGIN_SRC emacs-lisp
+  (setq org-return-follows-link 't)
+#+END_SRC
+*** Brak pustych linii przed g³ównymi punktami
+#+BEGIN_SRC emacs-lisp
+(setq org-blank-before-new-entry
+      '((heading . nil) (plain-list-item . nil)))
+#+END_SRC
+*** Przej¶cie do pocz±tku, koñca linii ignoruje gwizadki itp.
+#+BEGIN_SRC emacs-lisp
+  (setq org-special-ctrl-a/e t)
+#+END_SRC
+*** Automatyczne zapisywanie wszystkich plików =.org=
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'after-init-hook
+	    (lambda ()
+	      (run-with-timer 300 300 'org-save-all-org-buffers)))
+#+END_SRC
+*** Pliki agendy
+#+BEGIN_SRC emacs-lisp
+  (setq org-agenda-files (list org-directory) )
+#+END_SRC
+*** Szablony Org-capture
+#+BEGIN_SRC emacs-lisp
+  (setq org-capture-templates
+	'(
+	("t" "do zrobienia" entry (file "refile.org") "* TODO %?\n%U\n%a" )
+  ))
+#+END_SRC
+** Pakiet =Helm=
+#+BEGIN_SRC emacs-lisp
+    (use-package helm
+      :ensure t
+      :init (helm-mode 1)
+      :bind
+      ("M-x" . helm-M-x)
+      ("C-x C-b" . helm-buffers-list)
+      ("C-x C-f" . helm-find-files)
+      ("C-x r b" . helm-bookmarks)
+  )
+#+END_SRC
+*** =TAB= powinien uzupe³niaæ wpisy, a nie pokazywaæ pomoc
+#+BEGIN_SRC emacs-lisp
+  (define-key helm-find-files-map "\t" 'helm-execute-persistent-action)
+#+END_SRC
+** Pakiet =Which-key=
+#+BEGIN_SRC emacs-lisp
+  (use-package which-key
+    :ensure t
+    :init
+    (which-key-mode))
+#+END_SRC
+** Pakiet =Yasnippet=
+   Snippety. Uruchamiany przez napisanie w buforze /nazwy/ snippetu i
+   naci¶niêcie klawisza =TAB=. Nowe snippety mo¿na umieszczaæ w katalogu
+   =~/.emacs.d/snippets/<nazwa_trybu>=. Wiêcej informacji na stronie
+   [[http://joaotavora.github.io/yasnippet/snippet-development.html][Jak pisaæ snippety]].
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet
+    :ensure t 
+    :config
+    (yas-global-mode 1))
+#+END_SRC
+** Pakiet =Beacon=
+   Przy prze³±czaniu okien pomaga znale¼æ kursor.
+#+BEGIN_SRC emacs-lisp
+  (use-package beacon
+    :ensure t
+    :config
+    (beacon-mode 1)
+    )
+#+END_SRC
+** Pakiet =Ace Window=
+#+BEGIN_SRC emacs-lisp
+  (use-package ace-window
+    :ensure t
+    :init
+    (progn
+      (global-set-key [remap other-window] 'ace-window)
+      (custom-set-faces
+       '(aw-leading-char-face
+	 ((t (:inherit ace-jump-face-foreground :height 3.0)))))
+      )		  
+    )
+#+END_SRC
+** Pakiet =Swiper=
+#+BEGIN_SRC emacs-lisp
+  (use-package swiper
+    :ensure t
+    :config
+    (progn
+      (global-set-key "\C-s" 'swiper)
+      ))
+#+END_SRC
+** Pakiet =Undo Tree=
+   Wiêcej informacji na [[https://elpa.gnu.org/packages/undo-tree.html][Stronie elpy]]
+*** Instalacja
+#+BEGIN_SRC emacs-lisp
+  (use-package undo-tree
+    :ensure t
+    :init
+    (global-undo-tree-mode))
+#+END_SRC
+*** Skróty klawiszowe
+    * =C-_ C-/= (`undo-tree-undo') Undo changes.
+    * =M-_ C-?= (`undo-tree-redo') Redo changes.
+    * =undo-tree-switch-branch= Switch undo-tree branch.  (What does this
+      mean? Better press the button and see!)
+    * =C-x u= (`undo-tree-visualize') Visualize the undo tree.  (Better try
+      pressing this button too!)
+    * =C-x r u= (`undo-tree-save-state-to-register') Save current buffer
+      state to register.
+    * =C-x r U= (`undo-tree-restore-state-from-register') Restore buffer
+      state from register.
+** Pakiet =Powershell=
+   Wprowadza tryb do edycji plików =.ps1= czyli =Powershell=. Przynajmniej
+   tak± mam nadziejê
+*** Instalacja
+#+BEGIN_SRC emacs-lisp
+  (use-package powershell
+    :ensure t)
+#+END_SRC
+** Pakiet =magit=
+   Pakiet do obs³ugi =git= w emacs
+#+BEGIN_SRC emacs-lisp
+  (use-package magit
+    :ensure t)
+#+END_SRC
+Aby pro¶by o has³o dzia³a³y pod *Windows* musimy skonfigurowaæ gita by u¿ywa³ GUI do zapytañ. Warto
+w tym miejscu wspomnieæ o tym, ¿eby skonfigurowaæ *Git* do zapamiêtywania hase³ poleceniem =git
+config --global credential.helper wincred=
+
+#+BEGIN_SRC emacs-lisp
+  (setenv "GIT_ASKPASS" "git-gui--askpass")
+#+END_SRC
+** Pakiet =avy=
+   =M-s= szuka litery na ekranie. Pozwala na szybkie przemieszczenie siê do
+   tej litery.
+#+BEGIN_SRC emacs-lisp
+  (use-package avy
+    :ensure t
+    :bind ("M-s" . avy-goto-char)
+    ("M-l" . avy-goto-line)
+    ("M-S" . avy-goto-char-timer))
+#+END_SRC
+** Pakiet =autocomplete=
+Dope³nianie tekstu
+#+BEGIN_SRC emacs-lisp
+  (use-package auto-complete
+    :ensure t
+    :init
+    (progn
+      (ac-config-default)
+      (global-auto-complete-mode t)
+      ))
+#+END_SRC
+** Pakiet =csharpmode=
+   Do obs³ugi strasznego jêzyka =C#=
+   *Wygl±da na to, ¿e zosta³ usuniêty!*
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package csharp-mode
+  ;;   :ensure t)
+#+END_SRC
+** Pakiet =flycheck=
+*** Instalacja
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+    :ensure t
+    :init
+    (global-flycheck-mode t))
+#+END_SRC
+** Pakiet =jedi=
+   Pakiet uzupe³niaj±cy dla =Python=.
+#+BEGIN_SRC emacs-lisp
+  (use-package jedi
+    :ensure t
+    :init
+    (add-hook 'python-mode-hook 'jedi:setup)
+    (add-hook 'python-mode-hook 'jedi:ac-setup))
+
+#+END_SRC
+** Pakiet =highlight-symbol=
+   Ekwiwalent vimowego =*= oraz =#= + pod¶wietlanie symbolu
+#+BEGIN_SRC emacs-lisp
+  (use-package highlight-symbol
+    :ensure t
+    :init
+    (highlight-symbol-mode 1)
+    :bind ([C-f3] . highlight-symbol)
+    ("C-*" . highlight-symbol-next)
+    ("C-#" . highlight-symbol-prev)
+    ("C-M-*" . highlight-symbol-query-replace)
+    )
+#+END_SRC
+** Pakiet =dashboard=
+#+BEGIN_SRC emacs-lisp
+  (use-package dashboard
+    :ensure t
+    :config
+    (dashboard-setup-startup-hook)
+    (setq dasboard-items '((recents . 10)))
+    (setq dasboard-banner-logo-title "Hello YouTube!"))
+#+END_SRC
+** Pakiet =company=
+Podpowiadacz tekstu w Emacs
+[[http://company-mode.github.io/][Link do githuba]]
+*Uwaga* - Na razie bardzo wkurzaj±cy. Na razie lepiej u¿ywaæ [[Pakiet =autocomplete=][Autocomplete]]
+=#+BEGIN_SRC emacs-lisp=
+  (use-package company
+    :ensure t
+    :init
+    (add-hook 'after-init-hook 'global-company-mode))
+=#+END_SRC=
+** Pakiet =spaceline=
+£adny status bar w emacsie
+#+BEGIN_SRC emacs-lisp
+  (use-package spaceline
+    :ensure t
+    :config
+    (require 'spaceline-config)
+    (setq powerline-default-separator (quote arrow))
+    (spaceline-spacemacs-theme))
+#+END_SRC
+** Pakiet =diminish=
+Ukrywa minor mode'y w statusie.
+[[https://github.com/emacsmirror/diminish][Link do githuba]]
+#+BEGIN_SRC emacs-lisp
+  (use-package diminish
+    :ensure t
+    :init
+    (diminish 'helm-mode)
+    (diminish 'undo-tree-mode)
+    (diminish 'which-key-mode)
+    (diminish 'auto-fill-mode)
+    )
+#+END_SRC
+** Pakiet =dmenu=
+#+BEGIN_SRC emacs-lisp
+  (use-package dmenu
+    :ensure t
+    :bind
+    ("s-SPC" . 'dmenu))
+#+END_SRC
+** Pakiet =symon=
+#+BEGIN_SRC emacs-lisp
+  (use-package symon
+    :ensure t
+    :bind
+    ("s-h" . symon-mode))
+#+END_SRC
+** Pakiet =popup-kill-ring=
+#+BEGIN_SRC emacs-lisp
+  (use-package popup-kill-ring
+    :ensure t
+    :bind ("M-y" . popup-kill-ring))
+#+END_SRC
+** Pakiet =hungry-delete=
+#+BEGIN_SRC emacs-lisp
+  (use-package hungry-delete
+    :ensure t
+    :config
+    (global-hungry-delete-mode))
+#+END_SRC
+** Pakiet =expand-region=
+#+BEGIN_SRC emacs-lisp
+  (use-package expand-region
+    :ensure t
+    :config
+    (global-set-key (kbd "C-=") 'er/expand-region))
+#+END_SRC
+** Pakiet =neotree=
+Drzewo katalogów. W³±czanie/Wy³±czanie za pomoc± klawisza =F8=
+#+BEGIN_SRC emacs-lisp
+  (use-package neotree
+    :ensure t
+    :config
+    (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+    (setq neo-smart-open t)
+    :bind
+    ([f8] . neotree-toggle))
+
+#+END_SRC
+* Mapowanie klawiszy
+  - =C-c c e= - otwórz config
+  - =C-c c r= - prze³aduj config
+  - =C-M-S-k= - kopiuje do =killring= ca³± liniê
+  - =C-S-r= - przywraca plik
+  - =C-M-k= - ³±czy liniê z nastêpn±
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-S-k") 'kill-whole-line)
+  (global-set-key (kbd "C-M-S-k") 'copy-line)
+  (global-set-key (kbd "C-c c e") 'config-visit)
+  (global-set-key (kbd "C-c c r") 'config-reload)
+  (global-set-key (kbd "C-S-r") 'revert-buffer)
+  (global-set-key [remap split-window-below] 'split-and-follow-window-horizontally)
+  (global-set-key [remap split-window-right] 'split-and-follow-window-vertically)
+  (global-set-key [remap kill-line] 'radekg-kill-line)
+  (global-set-key (kbd "C-M-k") 'radekg-join-line) 
+  (global-set-key [remap kill-buffer] 'kill-curr-buffer)
+ #+END_SRC 
+*** Tryb org
+**** Mapowanie klawiszy (lokalne)
+     Je¶li przejdziemy do ¼ród³a linku, skrót =C-M-b= pozwoli wróciæ do
+     oryginalnej pozycji.
+ #+BEGIN_SRC emacs-lisp
+   (define-key org-mode-map (kbd "C-M-b") 'org-mark-ring-goto)
+ #+END_SRC
+**** Mapowanie klawiszy (globalne)
+     Globalne ustawienia klawiszy dla =org=.
+     - =C-c l= dodaje nowy link
+     - =C-c a= otwiera agendê
+     - =F6= pozwala dodaæ do =org-capture=
+ #+BEGIN_SRC emacs-lisp
+   (global-set-key "\C-cl" 'org-store-link)
+   (global-set-key "\C-ca" 'org-agenda)
+   (global-set-key (kbd "<f6>") 'org-capture)
+ #+END_SRC
+* Konfiguracja =winner-mode=
+Winner Mode is a global minor mode. 
+When activated, it allows you to /undo/ (and /redo/) changes in the window configuration with the
+key commands =C-c left= and =C-c right=.
+#+BEGIN_SRC emacs-lisp
+  (winner-mode 1)
+#+END_SRC
