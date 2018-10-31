@@ -12,6 +12,11 @@
     :ensure t)
 #+END_SRC
 * Podstawowe ustawienia Emacs'a
+** Ustawienia językowe
+#+BEGIN_SRC emacs-lisp
+  (set-language-environment "Polish")
+  (set-default-coding-systems 'utf-8)
+#+END_SRC
 ** Wyłączenie kontrolek UI
 #+BEGIN_SRC emacs-lisp
   (tool-bar-mode -1)
