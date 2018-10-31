@@ -583,3 +583,32 @@ key commands =C-c left= and =C-c right=.
 #+BEGIN_SRC emacs-lisp
   (winner-mode 1)
 #+END_SRC
+* Modeline
+Proste metody (formatowanie do bani), które pobierają z windows informacje o pamięci oraz obciążeniu
+procesora. Co ciekawe trwa to dość długo. Zupeł nie używalne pod =Windows=. Spróbuję z wersją =Linuksową=.
+
+#+BEGIN_SRC emacs-lisp
+  (defun get-free-memory ()
+      (format "%0.2f"
+	      (/
+	       (string-to-number
+		(shell-command-to-string "wmic OS get FreePhysicalMemory /Value | grep Free | cut -d '=' -f 2"))
+	       1024.0
+	       )
+	      )
+      )
+
+  (defun get-cpu-load ()
+    (shell-command-to-string "wmic cpu get loadpercentage /Value | grep Load | cut -d '=' -f 2 | tr -d '[:cntrl:]' ")
+    )
+
+  (defun update-mode-line ()
+    (setq global-mode-string (concat "Avail: " (get-free-memory) "MB" " CPU: " (get-cpu-load) "%%"))
+    )
+#+END_SRC
+
+Następnie wkładamy to do =modeline'a= co 10 sekund(?)
+#+BEGIN_SRC emacs-lisp
+;; nie używalne
+;;    (run-at-time "10 sec" 10 'update-mode-line)
+#+END_SRC
