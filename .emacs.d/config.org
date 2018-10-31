@@ -168,18 +168,17 @@ linii, i przesuwa kursor do nowej linii.
 #+BEGIN_SRC emacs-lisp
   ;;    (use-package zenburn-theme
   ;;      :ensure t)
-  ;; (use-package nord-theme
-  ;;   :ensure t
-  ;;   :init
-  ;;   (load-theme 'nord t))
-  (use-package gruvbox-theme
+  (use-package monokai-theme
     :ensure t
     :init
-    (load-theme 'gruvbox-dark-medium))
+    (load-theme 'monokai t nil)
+    )
+
 #+END_SRC
 ** Przeźroczystość
 #+BEGIN_SRC emacs-lisp
-(set-frame-parameter (selected-frame) 'alpha '(94))
+  (add-to-list 'default-frame-alist '(alpha . (90 . 66)))
+  (set-frame-parameter nil 'alpha '(90 . 66))
 #+END_SRC
 ** Czcionka
 Źródła czcionki na [[https://github.com/adobe-fonts/source-code-pro][GitHub]]
