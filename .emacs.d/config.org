@@ -291,6 +291,8 @@ linii, i przesuwa kursor do nowej linii.
     (use-package helm
       :ensure t
       :init (helm-mode 1)
+      :config
+      (setq helm-boring-buffer-regexp-list (list (rx "*magit-") (rx "*helm")))
       :bind
       ("M-x" . helm-M-x)
       ("C-x C-b" . helm-buffers-list)
