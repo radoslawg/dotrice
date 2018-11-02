@@ -544,7 +544,14 @@ Drzewo katalogów. Włączanie/Wyłączanie za pomocą klawisza =F8=
     (setq neo-smart-open t)
     :bind
     ([f8] . neotree-toggle))
-
+#+END_SRC
+** Pakiet =nyan-mode=
+Nyan mode pokazuje pozycję w pliku przy pomocy... Nyan cat'a ;)
+#+BEGIN_SRC emacs-lisp
+  (use-package nyan-mode
+    :ensure t
+    :init
+    (nyan-mode 1))
 #+END_SRC
 * Mapowanie klawiszy
   - =C-c c e= - otwórz config
