@@ -48,6 +48,18 @@
  #+BEGIN_SRC emacs-lisp
  (setq dired-dwim-target t)
  #+END_SRC
+** Kopie zapasowe plików
+Przenosi kopie zapasowe do katalogu =~/.emacs-saves/= i zostawia kilka kopii
+#+BEGIN_SRC emacs-lisp
+(setq
+   backup-by-copying t
+   backup-directory-alist
+    '(("." . "~/.emacs-saves/"))
+   delete-old-versions t
+   kept-new-versions 6
+   kept-old-versions 2
+   version-control t)
+#+END_SRC
 * Dodatkowe funkcje
 ** Kopiowanie całej linii
    Kopiuje całą linię i dodaje ją do =kill-ring=. Podłączone pod
