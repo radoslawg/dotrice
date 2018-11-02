@@ -35,6 +35,19 @@
 #+BEGIN_SRC emacs-lisp
   (global-auto-revert-mode)
 #+END_SRC
+** Konfiguracja =winner-mode=
+ Winner Mode is a global minor mode. 
+ When activated, it allows you to /undo/ (and /redo/) changes in the window configuration with the
+ key commands =C-c left= and =C-c right=.
+ #+BEGIN_SRC emacs-lisp
+   (winner-mode 1)
+ #+END_SRC
+** Konfiguracja =dired=
+ Wbudowany eksplorator plików dired. Wywołanie =C-x C-f= i wskazanie katalogu.
+*** Używanie =dired= jak Norton Commandera
+ #+BEGIN_SRC emacs-lisp
+ (setq dired-dwim-target t)
+ #+END_SRC
 * Dodatkowe funkcje
 ** Kopiowanie całej linii
    Kopiuje całą linię i dodaje ją do =kill-ring=. Podłączone pod
@@ -588,19 +601,6 @@ Nyan mode pokazuje pozycję w pliku przy pomocy... Nyan cat'a ;)
    (global-set-key "\C-ca" 'org-agenda)
    (global-set-key (kbd "<f6>") 'org-capture)
  #+END_SRC
-* Konfiguracja =winner-mode=
-Winner Mode is a global minor mode. 
-When activated, it allows you to /undo/ (and /redo/) changes in the window configuration with the
-key commands =C-c left= and =C-c right=.
-#+BEGIN_SRC emacs-lisp
-  (winner-mode 1)
-#+END_SRC
-* Konfiguracja =dired=
-Wbudowany eksplorator plików dired. Wywołanie =C-x C-f= i wskazanie katalogu.
-** Używanie =dired= jak Norton Commandera
-#+BEGIN_SRC emacs-lisp
-(setq dired-dwim-target t)
-#+END_SRC
 * Modeline
 Proste metody (formatowanie do bani), które pobierają z windows informacje o pamięci oraz obciążeniu
 procesora. Co ciekawe trwa to dość długo. Zupeł nie używalne pod =Windows=. Spróbuję z wersją =Linuksową=.
