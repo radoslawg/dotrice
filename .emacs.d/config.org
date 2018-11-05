@@ -317,23 +317,49 @@ Chwilowo wyłączone. Za każdym razem i tak się muszę z tym barować.
 	("t" "do zrobienia" entry (file "refile.org") "* TODO %?\n%U\n%a" )
   ))
 #+END_SRC
+** Pakiet =ivy=
+Zamiast pakietu =helm= - uzupełnianie komend
+#+BEGIN_SRC emacs-lisp
+    (use-package ivy
+      :ensure t
+      :config
+      (ivy-mode 1)
+      (setq ivy-use-virtual-buffers t)
+      (setq ivy-count-format "(%d/%d) ")
+      )
+#+END_SRC
+** Pakiet =counsel=
+Rozszerza możliwości ivy?
+#+BEGIN_SRC emacs-lisp
+  (use-package counsel
+    :ensure t
+    :config  
+    (global-set-key (kbd "M-x") 'counsel-M-x)
+    (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+    (global-set-key (kbd "C-h f") 'counsel-describe-function)
+    (global-set-key (kbd "C-h v") 'counsel-describe-variable)
+    (global-set-key (kbd "C-h l") 'counsel-find-library)
+    (global-set-key (kbd "C-h i") 'counsel-info-lookup-symbol)
+    (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+  )
+#+END_SRC
 ** Pakiet =Helm=
 #+BEGIN_SRC emacs-lisp
-    (use-package helm
-      :ensure t
-      :init (helm-mode 1)
-      :config
-      (setq helm-boring-buffer-regexp-list (list (rx "*magit-") (rx "*helm")))
-      :bind
-      ("M-x" . helm-M-x)
-      ("C-x C-b" . helm-buffers-list)
-      ("C-x C-f" . helm-find-files)
-      ("C-x r b" . helm-bookmarks)
-  )
+  ;;   (use-package helm
+  ;;     :ensure t
+  ;;     :init (helm-mode 1)
+  ;;     :config
+  ;;     (setq helm-boring-buffer-regexp-list (list (rx "*magit-") (rx "*helm")))
+  ;;     :bind
+  ;;     ("M-x" . helm-M-x)
+  ;;     ("C-x C-b" . helm-buffers-list)
+  ;;     ("C-x C-f" . helm-find-files)
+  ;;     ("C-x r b" . helm-bookmarks)
+  ;; )
 #+END_SRC
 *** =TAB= powinien uzupełniać wpisy, a nie pokazywać pomoc
 #+BEGIN_SRC emacs-lisp
-  (define-key helm-find-files-map "\t" 'helm-execute-persistent-action)
+;;  (define-key helm-find-files-map "\t" 'helm-execute-persistent-action)
 #+END_SRC
 ** Pakiet =Which-key=
 #+BEGIN_SRC emacs-lisp
