@@ -60,6 +60,18 @@ Przenosi kopie zapasowe do katalogu =~/.emacs-saves/= i zostawia kilka kopii
    kept-old-versions 2
    version-control t)
 #+END_SRC
+** Funkcja =windmove= 
+Pozwala przełączać się pomiędzy oknami za pomocą strzałek połączonych z klawiszem
+=shift=. Np. =shift-prawo=. Ponieważ w =org-mode= =S-prawo= itd. jest zarezerwowane, dodany jest
+również kod, który umożliwia używanie tych skrótów w org-mode, gdy ten nic z nimi nie robi.
+#+BEGIN_SRC emacs-lisp
+(windmove-default-keybindings)
+;; Make windmove work in org-mode:
+(add-hook 'org-shiftup-final-hook 'windmove-up)
+(add-hook 'org-shiftleft-final-hook 'windmove-left)
+(add-hook 'org-shiftdown-final-hook 'windmove-down)
+(add-hook 'org-shiftright-final-hook 'windmove-right)
+#+END_SRC
 * Dodatkowe funkcje
 ** Kopiowanie całej linii
    Kopiuje całą linię i dodaje ją do =kill-ring=. Podłączone pod
