@@ -13,6 +13,10 @@
 
 (org-babel-load-file (expand-file-name "~/.emacs.d/config.org"))
 
+;; Handle of server thingy
+(server-force-delete)
+(server-start)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
