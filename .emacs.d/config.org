@@ -283,14 +283,6 @@ Chwilowo wyłączone. Za każdym razem i tak się muszę z tym barować.
   (setq european-calendar-style t)
   (setq calendar-week-start-day 1)
 #+END_SRC
-*** Zadania zaplanowane na przyszłość nie pojawią się na liście =TODO=
-#+BEGIN_SRC emacs-lisp
-  (setq org-agenda-todo-ignore-scheduled (quote future))
-#+END_SRC
-*** Zadania z =DEADLINE=, które kończą się /niedługo/ znajdą się na liście =TODO=.
-#+BEGIN_SRC emacs-lisp
-  (setq org-agenda-todo-ignore-deadlines (quote far))
-#+END_SRC
 *** Pakiet =org-bullets=
 #+BEGIN_SRC emacs-lisp
   (use-package org-bullets
@@ -307,7 +299,7 @@ Chwilowo wyłączone. Za każdym razem i tak się muszę z tym barować.
 (setq org-blank-before-new-entry
       '((heading . nil) (plain-list-item . nil)))
 #+END_SRC
-*** Przejście do początku, końca linii ignoruje gwizadki itp.
+*** Przejście do początku, końca linii ignoruje gwiazdki itp.
 #+BEGIN_SRC emacs-lisp
   (setq org-special-ctrl-a/e t)
 #+END_SRC
@@ -317,16 +309,29 @@ Chwilowo wyłączone. Za każdym razem i tak się muszę z tym barować.
 	    (lambda ()
 	      (run-with-timer 300 300 'org-save-all-org-buffers)))
 #+END_SRC
-*** Pliki agendy
-#+BEGIN_SRC emacs-lisp
-  (setq org-agenda-files (list org-directory) )
-#+END_SRC
 *** Szablony Org-capture
 #+BEGIN_SRC emacs-lisp
   (setq org-capture-templates
 	'(
 	("t" "do zrobienia" entry (file "refile.org") "* TODO %?\n%U\n%a" )
   ))
+#+END_SRC
+*** Agenda
+**** Pliki agendy
+  #+BEGIN_SRC emacs-lisp
+    (setq org-agenda-files (list org-directory) )
+  #+END_SRC
+**** Zadania zaplanowane na przyszłość nie pojawią się na liście =TODO=
+ #+BEGIN_SRC emacs-lisp
+   (setq org-agenda-todo-ignore-scheduled (quote future))
+ #+END_SRC
+**** Zadania z =DEADLINE=, które kończą się /niedługo/ znajdą się na liście =TODO=.
+ #+BEGIN_SRC emacs-lisp
+   (setq org-agenda-todo-ignore-deadlines (quote far))
+ #+END_SRC
+**** Zadanie =ZROBIONE=, które są zaplanowane nie powinny znaleźć się w agendzie
+#+BEGIN_SRC emacs-lisp
+  (setq org-agenda-skip-scheduled-if-done t)
 #+END_SRC
 ** Pakiet =ivy=
 Zamiast pakietu =helm= - uzupełnianie komend
