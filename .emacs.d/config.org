@@ -218,8 +218,8 @@ linii, i przesuwa kursor do nowej linii.
 #+END_SRC
 ** Przeźroczystość
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'default-frame-alist '(alpha . (90 . 75)))
-  (set-frame-parameter nil 'alpha '(90 . 75))
+  (add-to-list 'default-frame-alist '(alpha . (85 . 75)))
+  (set-frame-parameter nil 'alpha '(85 . 75))
 #+END_SRC
 ** Czcionka
 Źródła czcionki na [[https://github.com/adobe-fonts/source-code-pro][GitHub]]
@@ -259,7 +259,10 @@ Chwilowo wyłączone. Za każdym razem i tak się muszę z tym barować.
 #+END_SRC
 *** Podstawowe ustawienia
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'org-mode-hook (lambda() (auto-fill-mode 1)))
+  (add-hook 'org-mode-hook (lambda()
+			     (auto-fill-mode 1)
+			     (org-indent-mode 1)
+			     ))
   (setq org-hide-leading-stars 't)
   (setq org-directory "~/org/")
   (setq org-agenda-skip-unavailable-files t)
@@ -296,8 +299,8 @@ Chwilowo wyłączone. Za każdym razem i tak się muszę z tym barować.
 #+END_SRC
 *** Brak pustych linii przed głównymi punktami
 #+BEGIN_SRC emacs-lisp
-(setq org-blank-before-new-entry
-      '((heading . nil) (plain-list-item . nil)))
+  ;; (setq org-blank-before-new-entry
+  ;;       '((heading . nil) (plain-list-item . nil)))
 #+END_SRC
 *** Przejście do początku, końca linii ignoruje gwiazdki itp.
 #+BEGIN_SRC emacs-lisp
