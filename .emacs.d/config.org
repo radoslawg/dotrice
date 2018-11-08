@@ -11,6 +11,16 @@
   (use-package try
     :ensure t)
 #+END_SRC
+** Pakiet =auto-package-update=
+#+BEGIN_SRC emacs-lisp
+  (use-package auto-package-update
+    :ensure t
+    :config
+    (setq auto-package-update-interval 1)
+    (setq auto-package-update-delete-old-versions t)
+    (auto-package-update-maybe)
+    )
+#+END_SRC
 * Podstawowe ustawienia Emacs'a
 ** Ustawienia językowe
 #+BEGIN_SRC emacs-lisp
@@ -387,6 +397,16 @@ Rozszerza możliwości ivy?
     :init
     (which-key-mode))
 #+END_SRC
+** Pakiet =company=
+Podpowiadacz tekstu w Emacs
+[[http://company-mode.github.io/][Link do githuba]]
+*Uwaga* - Na razie bardzo wkurzający. Na razie lepiej używać [[Pakiet =autocomplete=][Autocomplete]]
+#+BEGIN_SRC emacs-lisp
+  (use-package company
+    :ensure t
+    :init
+    (add-hook 'after-init-hook 'global-company-mode))
+#+END_SRC
 ** Pakiet =Yasnippet=
    Snippety. Uruchamiany przez napisanie w buforze /nazwy/ snippetu i
    naciśnięcie klawisza =TAB=. Nowe snippety można umieszczać w katalogu
@@ -397,6 +417,38 @@ Rozszerza możliwości ivy?
     :ensure t 
     :config
     (yas-global-mode 1))
+#+END_SRC
+*** Pakiet =Yasnippet Snippets=
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet-snippets
+    :ensure t
+    )
+#+END_SRC
+*** Integracja z =Company=
+#+BEGIN_SRC emacs-lisp
+  (defun check-expansion ()
+    (save-excursion
+      (if (looking-at "\\_>") t
+        (backward-char 1)
+        (if (looking-at "\\.") t
+          (backward-char 1)
+          (if (looking-at "->") t nil)))))
+
+  (defun do-yas-expand ()
+    (let ((yas/fallback-behavior 'return-nil))
+      (yas/expand)))
+
+  (defun tab-indent-or-complete ()
+    (interactive)
+    (if (minibufferp)
+        (minibuffer-complete)
+      (if (or (not yas/minor-mode)
+              (null (do-yas-expand)))
+          (if (check-expansion)
+              (company-complete-common)
+            (indent-for-tab-command)))))
+
+  (global-set-key [tab] 'tab-indent-or-complete)
 #+END_SRC
 ** Pakiet =Beacon=
    Przy przełączaniu okien pomaga znaleźć kursor.
@@ -479,23 +531,11 @@ config --global credential.helper wincred=
     ("M-l" . avy-goto-line)
     ("M-S" . avy-goto-char-timer))
 #+END_SRC
-** Pakiet =autocomplete=
-Dopełnianie tekstu
-#+BEGIN_SRC emacs-lisp
-  (use-package auto-complete
-    :ensure t
-    :init
-    (progn
-      (ac-config-default)
-      (global-auto-complete-mode t)
-      ))
-#+END_SRC
 ** Pakiet =csharpmode=
    Do obsługi strasznego języka =C#=
-   *Wygląda na to, że został usunięty!*
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package csharp-mode
-  ;;   :ensure t)
+  (use-package csharp-mode
+    :ensure t)
 #+END_SRC
 ** Pakiet =flycheck=
 *** Instalacja
@@ -537,16 +577,18 @@ Dopełnianie tekstu
     (setq dasboard-items '((recents . 10)))
     (setq dasboard-banner-logo-title "Hello YouTube!"))
 #+END_SRC
-** Pakiet =company=
-Podpowiadacz tekstu w Emacs
-[[http://company-mode.github.io/][Link do githuba]]
-*Uwaga* - Na razie bardzo wkurzający. Na razie lepiej używać [[Pakiet =autocomplete=][Autocomplete]]
-=#+BEGIN_SRC emacs-lisp=
-  (use-package company
-    :ensure t
-    :init
-    (add-hook 'after-init-hook 'global-company-mode))
-=#+END_SRC=
+** Pakiet =autocomplete=
+Dopełnianie tekstu
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package auto-complete
+  ;;   :ensure t
+  ;;   :init
+  ;;   (progn
+  ;;     (require 'auto-complete-config)
+  ;;     (ac-config-default)
+  ;;     (global-auto-complete-mode t)
+  ;;     ))
+#+END_SRC
 ** Pakiet =spaceline=
 Ładny status bar w emacsie
 #+BEGIN_SRC emacs-lisp
