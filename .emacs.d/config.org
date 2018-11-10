@@ -362,14 +362,18 @@ Rozszerza możliwości ivy?
 #+BEGIN_SRC emacs-lisp
   (use-package counsel
     :ensure t
-    :bind
+    :bind (
     ("M-x" . counsel-M-x)
+    ("M-y" . counsel-yank-pop)
     ("C-x C-f" . counsel-find-file)
     ("C-h f" . counsel-describe-function)
     ("C-h v" . counsel-describe-variable)
     ("C-h l" . counsel-find-library)
     ("C-h S" . counsel-info-lookup-symbol)
     ("<f2> u" . counsel-unicode-char)
+    :map ivy-minibuffer-map
+    ("M-y" . ivy-next-line)
+    )
   )
 #+END_SRC
 ** Pakiet =Helm=
@@ -625,12 +629,6 @@ Ukrywa minor mode'y w statusie.
     :ensure t
     :bind
     ("s-h" . symon-mode))
-#+END_SRC
-** Pakiet =popup-kill-ring=
-#+BEGIN_SRC emacs-lisp
-  (use-package popup-kill-ring
-    :ensure t
-    :bind ("M-y" . popup-kill-ring))
 #+END_SRC
 ** Pakiet =hungry-delete=
 #+BEGIN_SRC emacs-lisp
