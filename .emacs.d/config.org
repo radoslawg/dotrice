@@ -11,6 +11,16 @@
   (use-package try
     :ensure t)
 #+END_SRC
+** Pakiet =auto-package-update=
+#+BEGIN_SRC emacs-lisp
+  (use-package auto-package-update
+    :ensure t
+    :config
+    (setq auto-package-update-interval 1)
+    (setq auto-package-update-delete-old-versions t)
+    (auto-package-update-maybe)
+    )
+#+END_SRC
 * Podstawowe ustawienia Emacs'a
 ** Ustawienia językowe
 #+BEGIN_SRC emacs-lisp
@@ -59,6 +69,18 @@ Przenosi kopie zapasowe do katalogu =~/.emacs-saves/= i zostawia kilka kopii
    kept-new-versions 6
    kept-old-versions 2
    version-control t)
+#+END_SRC
+** Funkcja =windmove= 
+Pozwala przełączać się pomiędzy oknami za pomocą strzałek połączonych z klawiszem
+=shift=. Np. =shift-prawo=. Ponieważ w =org-mode= =S-prawo= itd. jest zarezerwowane, dodany jest
+również kod, który umożliwia używanie tych skrótów w org-mode, gdy ten nic z nimi nie robi.
+#+BEGIN_SRC emacs-lisp
+(windmove-default-keybindings)
+;; Make windmove work in org-mode:
+(add-hook 'org-shiftup-final-hook 'windmove-up)
+(add-hook 'org-shiftleft-final-hook 'windmove-left)
+(add-hook 'org-shiftdown-final-hook 'windmove-down)
+(add-hook 'org-shiftright-final-hook 'windmove-right)
 #+END_SRC
 * Dodatkowe funkcje
 ** Kopiowanie całej linii
@@ -144,8 +166,8 @@ linii, i przesuwa kursor do nowej linii.
      (cond ((looking-at "_") (geosoft-backward-word))
 	   (t (forward-char 1))))
 
-  (global-set-key (kbd "M-f") 'geosoft-forward-word)
-  (global-set-key (kbd "M-b") 'geosoft-backward-word)
+  ;; (global-set-key (kbd "M-f") 'geosoft-forward-word)
+  ;; (global-set-key (kbd "M-b") 'geosoft-backward-word)
 #+END_SRC
 ** Lepsze dzielenie okien
    Dzielenie okien oraz przesunięcie kursora do nowego okna
@@ -203,12 +225,11 @@ linii, i przesuwa kursor do nowej linii.
     :init
     (load-theme 'monokai t nil)
     )
-
 #+END_SRC
 ** Przeźroczystość
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'default-frame-alist '(alpha . (93 . 75)))
-  (set-frame-parameter nil 'alpha '(93 . 75))
+  (add-to-list 'default-frame-alist '(alpha . (90 . 75)))
+  (set-frame-parameter nil 'alpha '(90 . 75))
 #+END_SRC
 ** Czcionka
 Źródła czcionki na [[https://github.com/adobe-fonts/source-code-pro][GitHub]]
@@ -217,7 +238,7 @@ linii, i przesuwa kursor do nowej linii.
 		      :font "Source Code Pro"
 		      :weight 'normal
 		      :width 'normal
-		      :height 95)
+		      :height 120)
 #+END_SRC
 ** Dodatkowe /upiększenia/
    - Podświetlanie linii
@@ -248,7 +269,10 @@ Chwilowo wyłączone. Za każdym razem i tak się muszę z tym barować.
 #+END_SRC
 *** Podstawowe ustawienia
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'org-mode-hook (lambda() (auto-fill-mode 1)))
+  (add-hook 'org-mode-hook (lambda()
+			     (auto-fill-mode 1)
+			     (org-indent-mode 1)
+			     ))
   (setq org-hide-leading-stars 't)
   (setq org-directory "~/org/")
   (setq org-agenda-skip-unavailable-files t)
@@ -272,14 +296,6 @@ Chwilowo wyłączone. Za każdym razem i tak się muszę z tym barować.
   (setq european-calendar-style t)
   (setq calendar-week-start-day 1)
 #+END_SRC
-*** Zadania zaplanowane na przyszłość nie pojawią się na liście =TODO=
-#+BEGIN_SRC emacs-lisp
-  (setq org-agenda-todo-ignore-scheduled (quote future))
-#+END_SRC
-*** Zadania z =DEADLINE=, które kończą się /niedługo/ znajdą się na liście =TODO=.
-#+BEGIN_SRC emacs-lisp
-  (setq org-agenda-todo-ignore-deadlines (quote far))
-#+END_SRC
 *** Pakiet =org-bullets=
 #+BEGIN_SRC emacs-lisp
   (use-package org-bullets
@@ -293,10 +309,10 @@ Chwilowo wyłączone. Za każdym razem i tak się muszę z tym barować.
 #+END_SRC
 *** Brak pustych linii przed głównymi punktami
 #+BEGIN_SRC emacs-lisp
-(setq org-blank-before-new-entry
-      '((heading . nil) (plain-list-item . nil)))
+  ;; (setq org-blank-before-new-entry
+  ;;       '((heading . nil) (plain-list-item . nil)))
 #+END_SRC
-*** Przejście do początku, końca linii ignoruje gwizadki itp.
+*** Przejście do początku, końca linii ignoruje gwiazdki itp.
 #+BEGIN_SRC emacs-lisp
   (setq org-special-ctrl-a/e t)
 #+END_SRC
@@ -306,10 +322,6 @@ Chwilowo wyłączone. Za każdym razem i tak się muszę z tym barować.
 	    (lambda ()
 	      (run-with-timer 300 300 'org-save-all-org-buffers)))
 #+END_SRC
-*** Pliki agendy
-#+BEGIN_SRC emacs-lisp
-  (setq org-agenda-files (list org-directory) )
-#+END_SRC
 *** Szablony Org-capture
 #+BEGIN_SRC emacs-lisp
   (setq org-capture-templates
@@ -317,23 +329,66 @@ Chwilowo wyłączone. Za każdym razem i tak się muszę z tym barować.
 	("t" "do zrobienia" entry (file "refile.org") "* TODO %?\n%U\n%a" )
   ))
 #+END_SRC
+*** Agenda
+**** Pliki agendy
+  #+BEGIN_SRC emacs-lisp
+    (setq org-agenda-files (list org-directory) )
+  #+END_SRC
+**** Zadania zaplanowane na przyszłość nie pojawią się na liście =TODO=
+ #+BEGIN_SRC emacs-lisp
+   (setq org-agenda-todo-ignore-scheduled (quote future))
+ #+END_SRC
+**** Zadania z =DEADLINE=, które kończą się /niedługo/ znajdą się na liście =TODO=.
+ #+BEGIN_SRC emacs-lisp
+   (setq org-agenda-todo-ignore-deadlines (quote far))
+ #+END_SRC
+**** Zadanie =ZROBIONE=, które są zaplanowane nie powinny znaleźć się w agendzie
+#+BEGIN_SRC emacs-lisp
+  (setq org-agenda-skip-scheduled-if-done t)
+#+END_SRC
+** Pakiet =ivy=
+Zamiast pakietu =helm= - uzupełnianie komend
+#+BEGIN_SRC emacs-lisp
+    (use-package ivy
+      :ensure t
+      :config
+      (ivy-mode 1)
+      (setq ivy-use-virtual-buffers t)
+      (setq ivy-count-format "(%d/%d) ")
+      )
+#+END_SRC
+** Pakiet =counsel=
+Rozszerza możliwości ivy?
+#+BEGIN_SRC emacs-lisp
+  (use-package counsel
+    :ensure t
+    :bind
+    ("M-x" . counsel-M-x)
+    ("C-x C-f" . counsel-find-file)
+    ("C-h f" . counsel-describe-function)
+    ("C-h v" . counsel-describe-variable)
+    ("C-h l" . counsel-find-library)
+    ("C-h S" . counsel-info-lookup-symbol)
+    ("<f2> u" . counsel-unicode-char)
+  )
+#+END_SRC
 ** Pakiet =Helm=
 #+BEGIN_SRC emacs-lisp
-    (use-package helm
-      :ensure t
-      :init (helm-mode 1)
-      :config
-      (setq helm-boring-buffer-regexp-list (list (rx "*magit-") (rx "*helm")))
-      :bind
-      ("M-x" . helm-M-x)
-      ("C-x C-b" . helm-buffers-list)
-      ("C-x C-f" . helm-find-files)
-      ("C-x r b" . helm-bookmarks)
-  )
+  ;;   (use-package helm
+  ;;     :ensure t
+  ;;     :init (helm-mode 1)
+  ;;     :config
+  ;;     (setq helm-boring-buffer-regexp-list (list (rx "*magit-") (rx "*helm")))
+  ;;     :bind
+  ;;     ("M-x" . helm-M-x)
+  ;;     ("C-x C-b" . helm-buffers-list)
+  ;;     ("C-x C-f" . helm-find-files)
+  ;;     ("C-x r b" . helm-bookmarks)
+  ;; )
 #+END_SRC
 *** =TAB= powinien uzupełniać wpisy, a nie pokazywać pomoc
 #+BEGIN_SRC emacs-lisp
-  (define-key helm-find-files-map "\t" 'helm-execute-persistent-action)
+;;  (define-key helm-find-files-map "\t" 'helm-execute-persistent-action)
 #+END_SRC
 ** Pakiet =Which-key=
 #+BEGIN_SRC emacs-lisp
@@ -341,6 +396,16 @@ Chwilowo wyłączone. Za każdym razem i tak się muszę z tym barować.
     :ensure t
     :init
     (which-key-mode))
+#+END_SRC
+** Pakiet =company=
+Podpowiadacz tekstu w Emacs
+[[http://company-mode.github.io/][Link do githuba]]
+*Uwaga* - Na razie bardzo wkurzający. Na razie lepiej używać [[Pakiet =autocomplete=][Autocomplete]]
+#+BEGIN_SRC emacs-lisp
+  (use-package company
+    :ensure t
+    :init
+    (add-hook 'after-init-hook 'global-company-mode))
 #+END_SRC
 ** Pakiet =Yasnippet=
    Snippety. Uruchamiany przez napisanie w buforze /nazwy/ snippetu i
@@ -352,6 +417,38 @@ Chwilowo wyłączone. Za każdym razem i tak się muszę z tym barować.
     :ensure t 
     :config
     (yas-global-mode 1))
+#+END_SRC
+*** Pakiet =Yasnippet Snippets=
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet-snippets
+    :ensure t
+    )
+#+END_SRC
+*** Integracja z =Company=
+#+BEGIN_SRC emacs-lisp
+  (defun check-expansion ()
+    (save-excursion
+      (if (looking-at "\\_>") t
+        (backward-char 1)
+        (if (looking-at "\\.") t
+          (backward-char 1)
+          (if (looking-at "->") t nil)))))
+
+  (defun do-yas-expand ()
+    (let ((yas/fallback-behavior 'return-nil))
+      (yas/expand)))
+
+  (defun tab-indent-or-complete ()
+    (interactive)
+    (if (minibufferp)
+        (minibuffer-complete)
+      (if (or (not yas/minor-mode)
+              (null (do-yas-expand)))
+          (if (check-expansion)
+              (company-complete-common)
+            (indent-for-tab-command)))))
+
+;;  (global-set-key [tab] 'tab-indent-or-complete)
 #+END_SRC
 ** Pakiet =Beacon=
    Przy przełączaniu okien pomaga znaleźć kursor.
@@ -379,10 +476,9 @@ Chwilowo wyłączone. Za każdym razem i tak się muszę z tym barować.
 #+BEGIN_SRC emacs-lisp
   (use-package swiper
     :ensure t
-    :config
-    (progn
-      (global-set-key "\C-s" 'swiper)
-      ))
+    :bind
+    ("C-s" . swiper)
+    )
 #+END_SRC
 ** Pakiet =Undo Tree=
    Więcej informacji na [[https://elpa.gnu.org/packages/undo-tree.html][Stronie elpy]]
@@ -435,23 +531,11 @@ config --global credential.helper wincred=
     ("M-l" . avy-goto-line)
     ("M-S" . avy-goto-char-timer))
 #+END_SRC
-** Pakiet =autocomplete=
-Dopełnianie tekstu
-#+BEGIN_SRC emacs-lisp
-  (use-package auto-complete
-    :ensure t
-    :init
-    (progn
-      (ac-config-default)
-      (global-auto-complete-mode t)
-      ))
-#+END_SRC
 ** Pakiet =csharpmode=
    Do obsługi strasznego języka =C#=
-   *Wygląda na to, że został usunięty!*
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package csharp-mode
-  ;;   :ensure t)
+  (use-package csharp-mode
+    :ensure t)
 #+END_SRC
 ** Pakiet =flycheck=
 *** Instalacja
@@ -493,16 +577,18 @@ Dopełnianie tekstu
     (setq dasboard-items '((recents . 10)))
     (setq dasboard-banner-logo-title "Hello YouTube!"))
 #+END_SRC
-** Pakiet =company=
-Podpowiadacz tekstu w Emacs
-[[http://company-mode.github.io/][Link do githuba]]
-*Uwaga* - Na razie bardzo wkurzający. Na razie lepiej używać [[Pakiet =autocomplete=][Autocomplete]]
-=#+BEGIN_SRC emacs-lisp=
-  (use-package company
-    :ensure t
-    :init
-    (add-hook 'after-init-hook 'global-company-mode))
-=#+END_SRC=
+** Pakiet =autocomplete=
+Dopełnianie tekstu
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package auto-complete
+  ;;   :ensure t
+  ;;   :init
+  ;;   (progn
+  ;;     (require 'auto-complete-config)
+  ;;     (ac-config-default)
+  ;;     (global-auto-complete-mode t)
+  ;;     ))
+#+END_SRC
 ** Pakiet =spaceline=
 Ładny status bar w emacsie
 #+BEGIN_SRC emacs-lisp
