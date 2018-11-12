@@ -228,8 +228,8 @@ linii, i przesuwa kursor do nowej linii.
 #+END_SRC
 ** Przeźroczystość
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'default-frame-alist '(alpha . (85 . 75)))
-  (set-frame-parameter nil 'alpha '(85 . 75))
+  (add-to-list 'default-frame-alist '(alpha . (90 . 75)))
+  (set-frame-parameter nil 'alpha '(90 . 75))
 #+END_SRC
 ** Czcionka
 Źródła czcionki na [[https://github.com/adobe-fonts/source-code-pro][GitHub]]
@@ -452,7 +452,7 @@ Podpowiadacz tekstu w Emacs
               (company-complete-common)
             (indent-for-tab-command)))))
 
-  (global-set-key [tab] 'tab-indent-or-complete)
+;;  (global-set-key [tab] 'tab-indent-or-complete)
 #+END_SRC
 ** Pakiet =Beacon=
    Przy przełączaniu okien pomaga znaleźć kursor.
@@ -662,6 +662,17 @@ Nyan mode pokazuje pozycję w pliku przy pomocy... Nyan cat'a ;)
     :ensure t
     :init
     (nyan-mode 1))
+#+END_SRC
+** Pakiet =nlinum-relative=
+W trybach programistycznych numeruje linie relatywnie do obecnej pozycji. Teoretycznie, w edytorze
+=VIM= używa się tego do skakania pomiędzy liniami (gdzie jest to dośc proste)
+#+BEGIN_SRC emacs-lisp
+  (use-package nlinum-relative
+    :ensure t
+    :init
+    (add-hook 'prog-mode-hook 'nlinum-relative-mode)
+    (setq nlinum-relative-redisplay-delay 0)
+    )
 #+END_SRC
 * Mapowanie klawiszy
   - =C-c c e= - otwórz config
