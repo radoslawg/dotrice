@@ -22,6 +22,15 @@
     )
 #+END_SRC
 * Podstawowe ustawienia Emacs'a
+** Serwer Emacsa
+Uruchom serwer =Emacsa=. Domyślną stroną ma być =*dashboard*=.
+=C-x C-c= powinno zamykać ramkę zamiast emacsa?
+#+BEGIN_SRC emacs-lisp
+  (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
+  (server-force-delete)
+  (server-start)
+  (global-set-key (kbd "C-x C-c") 'delete-frame)
+#+END_SRC
 ** Ustawienia językowe
 #+BEGIN_SRC emacs-lisp
   (set-language-environment "Polish")
@@ -667,11 +676,10 @@ Nyan mode pokazuje pozycję w pliku przy pomocy... Nyan cat'a ;)
 W trybach programistycznych numeruje linie relatywnie do obecnej pozycji. Teoretycznie, w edytorze
 =VIM= używa się tego do skakania pomiędzy liniami (gdzie jest to dośc proste)
 #+BEGIN_SRC emacs-lisp
-  (use-package nlinum-relative
+  (use-package nlinum
     :ensure t
     :init
-    (add-hook 'prog-mode-hook 'nlinum-relative-mode)
-    (setq nlinum-relative-redisplay-delay 0)
+    (add-hook 'prog-mode-hook 'nlinum-mode)
     )
 #+END_SRC
 * Mapowanie klawiszy
