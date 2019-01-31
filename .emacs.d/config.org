@@ -244,10 +244,10 @@ linii, i przesuwa kursor do nowej linii.
 Źródła czcionki na [[https://github.com/adobe-fonts/source-code-pro][GitHub]]
 #+BEGIN_SRC emacs-lisp
   (set-face-attribute 'default nil
-		      :font "Source Code Pro"
+		      :font "Monaco"
 		      :weight 'normal
 		      :width 'normal
-		      :height 120)
+		      :height 110)
 #+END_SRC
 ** Dodatkowe /upiększenia/
    - Podświetlanie linii
