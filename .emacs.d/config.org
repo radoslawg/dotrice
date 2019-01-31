@@ -680,12 +680,13 @@ Nyan mode pokazuje pozycję w pliku przy pomocy... Nyan cat'a ;)
     :init
     (nyan-mode 1))
 #+END_SRC
-** Pakiet =nlinum-relative=
-W trybach programistycznych numeruje linie relatywnie do obecnej pozycji. Teoretycznie, w edytorze
-=VIM= używa się tego do skakania pomiędzy liniami (gdzie jest to dośc proste)
+** Pakiet =nlinum=
+W trybach programistycznych numeruje linie.
 #+BEGIN_SRC emacs-lisp
   (use-package nlinum
     :ensure t
+    :config
+    (setq nlinum-highlight-current-line t)
     :init
     (add-hook 'prog-mode-hook 'nlinum-mode)
     )
