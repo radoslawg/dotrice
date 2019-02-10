@@ -67,6 +67,11 @@ Uruchom serwer =Emacsa=. Domyślną stroną ma być =*dashboard*=.
  #+BEGIN_SRC emacs-lisp
  (setq dired-dwim-target t)
  #+END_SRC
+*** =dired+= rozszerza dired
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path "~/.emacs.d/lisp/dired+")
+  (require 'dired+)
+#+END_SRC
 ** Kopie zapasowe plików
 Przenosi kopie zapasowe do katalogu =~/.emacs-saves/= i zostawia kilka kopii
 #+BEGIN_SRC emacs-lisp
