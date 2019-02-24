@@ -249,7 +249,7 @@ linii, i przesuwa kursor do nowej linii.
 Źródła czcionki na [[https://github.com/adobe-fonts/source-code-pro][GitHub]]
 #+BEGIN_SRC emacs-lisp
   (set-face-attribute 'default nil
-		      :font "Monaco"
+		      :font "Iosevka"
 		      :weight 'normal
 		      :width 'normal
 		      :height 110)
