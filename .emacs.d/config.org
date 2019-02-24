@@ -696,6 +696,14 @@ W trybach programistycznych numeruje linie.
     (add-hook 'prog-mode-hook 'nlinum-mode)
     )
 #+END_SRC
+** Pakiet =ox-hugo=
+#+BEGIN_SRC emacs-lisp
+  (use-package ox-hugo
+    :ensure t
+    :after ox
+    )
+#+END_SRC
+
 * Mapowanie klawiszy
   - =C-c c e= - otwórz config
   - =C-c c r= - przeładuj config
