@@ -22,6 +22,18 @@
     )
 #+END_SRC
 * Podstawowe ustawienia Emacs'a
+** Klawisze windows
+#+BEGIN_SRC emacs-lisp
+  ;; make PC keyboard's Win key or other to type Super or Hyper, for emacs running on Windows.
+  (setq w32-pass-lwindow-to-system nil)
+  (setq w32-lwindow-modifier 'super) ; Left Windows key
+
+  (setq w32-pass-rwindow-to-system nil)
+  (setq w32-rwindow-modifier 'super) ; Right Windows key
+
+  (setq w32-pass-apps-to-system nil)
+  (setq w32-apps-modifier 'hyper) ; Menu/App key
+#+END_SRC
 ** Serwer Emacsa
 Uruchom serwer =Emacsa=. Domyślną stroną ma być =*dashboard*=.
 =C-x C-c= powinno zamykać ramkę zamiast emacsa?
@@ -731,17 +743,25 @@ W trybach programistycznych numeruje linie.
 #+BEGIN_SRC emacs-lisp
     (use-package projectile
       :ensure t
+      :init
+      (projectile-mode +1)
+      :bind-keymap
+      ("H-p" . projectile-command-map)
   )
 #+END_SRC
 ** Pakiet =omnisharp=
 #+BEGIN_SRC emacs-lisp
-  (use-package omnisharp
-    :ensure t
-    :init
-    (add-hook 'csharp-mode-hook 'omnisharp-mode)
-    (add-hook 'csharp-mode-hook 'company-mode)
-    (add-hook 'csharp-mode-hook 'flycheck-mode)
-)
+    (use-package omnisharp
+      :ensure t
+      :init
+      (add-hook 'csharp-mode-hook 'omnisharp-mode)
+      (add-hook 'csharp-mode-hook 'company-mode)
+      (add-hook 'csharp-mode-hook 'flycheck-mode)
+      (add-hook 'csharp-mode-hook 'projectile-mode)
+      :bind
+      ("C-`" . omnisharp-run-code-action-refactoring)
+      ([f5] . recompile)
+  )
 #+END_SRC
 ** Pakiet =csharpmode=
    Do obsługi strasznego języka =C#=
