@@ -628,7 +628,14 @@ config --global credential.helper wincred=
     :config
     (dashboard-setup-startup-hook)
     (setq dasboard-items '((recents . 10)))
-    (setq dasboard-banner-logo-title "Hello YouTube!"))
+    (setq dashboard-center-content t)
+    (setq dasboard-banner-logo-title "Cześć!")
+    (setq dashboard-set-heading-icons t)
+    (setq dashboard-set-file-icons t)
+    (setq dashboard-set-navigator t)
+    (setq dashboard-set-init-info t)
+    (add-to-list 'dashboard-items '(agenda) t)
+    (setq show-week-agenda-p t))
 #+END_SRC
 ** Pakiet =autocomplete=
 Dopełnianie tekstu
