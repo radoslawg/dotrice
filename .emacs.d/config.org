@@ -28,8 +28,16 @@ Uruchom serwer =Emacsa=. Domyślną stroną ma być =*dashboard*=.
 #+BEGIN_SRC emacs-lisp
   (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
   (server-force-delete)
-  (server-start)
-  (global-set-key (kbd "C-x C-c") 'delete-frame)
+(require 'server)
+(unless (server-running-p)
+  (cond
+   ((eq system-type 'windows-nt)
+    (setq server-auth-dir "~\\.emacs.d\\server\\"))
+   ((eq system-type 'gnu/linux)
+    (setq server-auth-dir "~/.emacs.d/server/")))
+  (setq server-name "emacs-server-file")
+  (server-start))
+  (global-set-key (kbd "C-x C-c") 'save-buffers-kill-emacs)
 #+END_SRC
 ** Ustawienia językowe
 #+BEGIN_SRC emacs-lisp
@@ -431,7 +439,12 @@ Podpowiadacz tekstu w Emacs
   (use-package company
     :ensure t
     :init
-    (add-hook 'after-init-hook 'global-company-mode))
+    (add-hook 'after-init-hook 'global-company-mode)
+    :config
+    (add-to-list 'company-backends 'company-omnisharp)
+    :bind
+    ("M-<SPC>" . company-complete)
+)
 #+END_SRC
 ** Pakiet =Yasnippet=
    Snippety. Uruchamiany przez napisanie w buforze /nazwy/ snippetu i
@@ -556,12 +569,6 @@ config --global credential.helper wincred=
     :bind ("M-s" . avy-goto-char)
     ("M-l" . avy-goto-line)
     ("M-S" . avy-goto-char-timer))
-#+END_SRC
-** Pakiet =csharpmode=
-   Do obsługi strasznego języka =C#=
-#+BEGIN_SRC emacs-lisp
-  (use-package csharp-mode
-    :ensure t)
 #+END_SRC
 ** Pakiet =flycheck=
 *** Instalacja
@@ -703,7 +710,28 @@ W trybach programistycznych numeruje linie.
     :after ox
     )
 #+END_SRC
-
+** Pakiet =projectile=
+#+BEGIN_SRC emacs-lisp
+    (use-package projectile
+      :ensure t
+  )
+#+END_SRC
+** Pakiet =omnisharp=
+#+BEGIN_SRC emacs-lisp
+  (use-package omnisharp
+    :ensure t
+    :init
+    (add-hook 'csharp-mode-hook 'omnisharp-mode)
+    (add-hook 'csharp-mode-hook 'company-mode)
+    (add-hook 'csharp-mode-hook 'flycheck-mode)
+)
+#+END_SRC
+** Pakiet =csharpmode=
+   Do obsługi strasznego języka =C#=
+#+BEGIN_SRC emacs-lisp
+  (use-package csharp-mode
+    :ensure t)
+#+END_SRC
 * Mapowanie klawiszy
   - =C-c c e= - otwórz config
   - =C-c c r= - przeładuj config
