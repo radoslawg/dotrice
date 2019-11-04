@@ -240,18 +240,18 @@ linii, i przesuwa kursor do nowej linii.
 * Wygląd
 ** Motyw
 #+BEGIN_SRC emacs-lisp
-  ;;    (use-package zenburn-theme
-  ;;      :ensure t)
-  (use-package monokai-theme
-    :ensure t
-    :init
-    (load-theme 'monokai t nil)
-    )
+      (use-package zenburn-theme
+        :ensure t)
+  ;; (use-package monokai-theme
+  ;;   :ensure t
+  ;;   :init
+  ;;   (load-theme 'monokai t nil)
+  ;;   )
 #+END_SRC
 ** Przeźroczystość
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'default-frame-alist '(alpha . (90 . 75)))
-  (set-frame-parameter nil 'alpha '(90 . 75))
+  (add-to-list 'default-frame-alist '(alpha . (93 . 80)))
+  (set-frame-parameter nil 'alpha '(93 . 80))
 #+END_SRC
 ** Czcionka
 Źródła czcionki na [[https://github.com/adobe-fonts/source-code-pro][GitHub]]
@@ -260,7 +260,7 @@ linii, i przesuwa kursor do nowej linii.
 		      :font "Iosevka"
 		      :weight 'normal
 		      :width 'normal
-		      :height 110)
+		      :height 130)
 #+END_SRC
 ** Dodatkowe /upiększenia/
    - Podświetlanie linii
@@ -272,9 +272,9 @@ linii, i przesuwa kursor do nowej linii.
 ** Rozmiary okna
 Chwilowo wyłączone. Za każdym razem i tak się muszę z tym barować.
 #+BEGIN_SRC emacs-lisp
-  ;; (when window-system (set-frame-size (selected-frame) 220 55))
-  ;; (add-to-list 'default-frame-alist '(height . 55))
-  ;; (add-to-list 'default-frame-alist '(width . 220))
+  (when window-system (set-frame-size (selected-frame) 200 50))
+  (add-to-list 'default-frame-alist '(height . 50))
+  (add-to-list 'default-frame-alist '(width . 200))
 #+END_SRC
 ** Kolumna przepełnienia (=fill=)
    Kolumna, po której następuje przepełnienie i nowa linia. Całe paragraphy
@@ -875,3 +875,6 @@ Następnie wkładamy to do =modeline'a= co 10 sekund(?)
 ;; nie używalne
 ;;    (run-at-time "10 sec" 10 'update-mode-line)
 #+END_SRC
+
+
+
