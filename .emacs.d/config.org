@@ -387,6 +387,26 @@ Zamiast pakietu =helm= - uzupełnianie komend
       (setq ivy-count-format "(%d/%d) ")
       )
 #+END_SRC
+** Pakiet =posframe= i inne
+Pokazuje okno zamiast mieszać w statusie
+#+BEGIN_SRC emacs-lisp
+  (use-package posframe
+    :ensure t
+    )
+
+  (use-package ivy-posframe
+    :ensure t
+    :config
+    (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display)))
+    (ivy-posframe-mode 1)
+    )
+
+  (use-package company-posframe
+    :ensure t
+    :config
+    (company-posframe-mode 1)
+    )
+#+END_SRC
 ** Pakiet =counsel=
 Rozszerza możliwości ivy?
 #+BEGIN_SRC emacs-lisp
