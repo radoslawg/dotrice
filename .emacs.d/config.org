@@ -262,8 +262,8 @@ linii, i przesuwa kursor do nowej linii.
 #+END_SRC
 ** Przeźroczystość
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'default-frame-alist '(alpha . (93 . 80)))
-  (set-frame-parameter nil 'alpha '(93 . 80))
+  (add-to-list 'default-frame-alist '(alpha . (93 . 60)))
+  (set-frame-parameter nil 'alpha '(93 . 60))
 #+END_SRC
 ** Czcionka
 Źródła czcionki na [[https://github.com/adobe-fonts/source-code-pro][GitHub]]
@@ -272,7 +272,7 @@ linii, i przesuwa kursor do nowej linii.
 		      :font "Iosevka"
 		      :weight 'normal
 		      :width 'normal
-		      :height 130)
+		      :height 110)
 #+END_SRC
 ** Dodatkowe /upiększenia/
    - Podświetlanie linii
