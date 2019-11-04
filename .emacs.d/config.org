@@ -642,16 +642,6 @@ Dopełnianie tekstu
   ;;     (global-auto-complete-mode t)
   ;;     ))
 #+END_SRC
-** Pakiet =spaceline=
-Ładny status bar w emacsie
-#+BEGIN_SRC emacs-lisp
-  (use-package spaceline
-    :ensure t
-    :config
-    (require 'spaceline-config)
-    (setq powerline-default-separator (quote arrow))
-    (spaceline-spacemacs-theme))
-#+END_SRC
 ** Pakiet =diminish=
 Ukrywa minor mode'y w statusie.
 [[https://github.com/emacsmirror/diminish][Link do githuba]]
@@ -751,6 +741,75 @@ W trybach programistycznych numeruje linie.
 #+BEGIN_SRC emacs-lisp
   (use-package csharp-mode
     :ensure t)
+#+END_SRC
+** Pakiet =spaceline=
+Ładny status bar w emacsie
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package spaceline
+  ;;   :ensure t
+  ;;   :config
+  ;;   (require 'spaceline-config)
+  ;;   (setq powerline-default-separator (quote arrow))
+  ;;   (spaceline-spacemacs-theme))
+#+END_SRC
+** Eksperymenty z =doomline=
+#+BEGIN_SRC emacs-lisp
+  (use-package all-the-icons
+    :ensure t)
+  (use-package minions
+    :ensure t
+    :config (minions-mode 1))
+
+  (use-package doom-modeline
+    :ensure t
+    :hook (after-init . doom-modeline-mode)
+    :config
+    (setq doom-modeline-major-mode-color-icon t)
+
+    ;; How wide the mode-line bar should be. It's only respected in GUI.
+    (setq doom-modeline-bar-width 10)
+    ;; Whether display the icon for the buffer state. It respects `doom-modeline-icon'.
+    (setq doom-modeline-buffer-state-icon t)
+    ;; Determines the style used by `doom-modeline-buffer-file-name'.
+    ;;
+    ;; Given ~/Projects/FOSS/emacs/lisp/comint.el
+    ;;   truncate-upto-project => ~/P/F/emacs/lisp/comint.el
+    ;;   truncate-from-project => ~/Projects/FOSS/emacs/l/comint.el
+    ;;   truncate-with-project => emacs/l/comint.el
+    ;;   truncate-except-project => ~/P/F/emacs/l/comint.el
+    ;;   truncate-upto-root => ~/P/F/e/lisp/comint.el
+    ;;   truncate-all => ~/P/F/e/l/comint.el
+    ;;   relative-from-project => emacs/lisp/comint.el
+    ;;   relative-to-project => lisp/comint.el
+    ;;   file-name => comint.el
+    ;;   buffer-name => comint.el<2> (uniquify buffer name)
+    ;;
+    ;; If you are expereicing the laggy issue, especially while editing remote files
+    ;; with tramp, please try `file-name' style.
+    ;; Please refer to https://github.com/bbatsov/projectile/issues/657.
+    (setq doom-modeline-buffer-file-name-style 'truncate-upto-project)
+
+    ;; Whether display the modification icon for the buffer.
+    ;; It respects `doom-modeline-icon' and `doom-modeline-buffer-state-icon'.
+    (setq doom-modeline-buffer-modification-icon t)
+
+    ;; Whether ;TODO: o use unicode as a fallback (instead of ASCII) when not using icons.
+    (setq doom-modeline-unicode-fallback t)
+
+    ;; Whether display minor modes in mode-line.
+    (setq doom-modeline-minor-modes (featurep 'minions))
+    ;; Whether display buffer encoding.
+    (setq doom-modeline-buffer-encoding t)
+
+
+    ;; The maximum displayed length of the branch name of version control.
+    (setq doom-modeline-vcs-max-length 12)
+
+    ;; Whether display environment version.
+    (setq doom-modeline-env-version t)
+
+    (setq doom-modeline-vcs-max-length 50)
+    )
 #+END_SRC
 * Mapowanie klawiszy
   - =C-c c e= - otwórz config
