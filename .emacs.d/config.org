@@ -267,8 +267,8 @@ linii, i przesuwa kursor do nowej linii.
 #+END_SRC
 ** Przeźroczystość
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'default-frame-alist '(alpha . (93 . 60)))
-  (set-frame-parameter nil 'alpha '(93 . 60))
+  (add-to-list 'default-frame-alist '(alpha . (93 . 85)))
+  (set-frame-parameter nil 'alpha '(93 . 85))
 #+END_SRC
 ** Czcionka
 Źródła czcionki na [[https://github.com/adobe-fonts/source-code-pro][GitHub]]
