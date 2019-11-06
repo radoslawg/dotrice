@@ -921,3 +921,21 @@ Następnie wkładamy to do =modeline'a= co 10 sekund(?)
 
 
 
+* Skrypty do pracy
+** Budowanie Unita
+#+BEGIN_SRC emacs-lisp
+  (defun unit/build ()
+    "Buduje i uruchamia unit-a"
+    (interactive)
+    (async-shell-command
+     ;; command and parameters
+     "c:/work/unit.git/Lib/nant/bin/NAnt.exe -buildfile:c:/work/unit.git/Script/lodz.build build_server_sln build_client deploy_server deploy_client"
+     ;; output buffer
+     "*Unit-build*"
+     ;; name of the error buffer
+     nil
+     )
+    )
+
+  (global-set-key [f9] 'unit/build)
+#+END_SRC
