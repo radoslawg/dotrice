@@ -22,6 +22,11 @@
     )
 #+END_SRC
 * Podstawowe ustawienia Emacs'a
+** Jak działa edycja
+Kasowanie znaku klawiszem "DELETE" nie powinno usuwać całego zaznaczenia. I tak używam =C-w= do tego.
+#+BEGIN_SRC emacs-lisp
+  (setq delete-active-region nil)
+#+END_SRC
 ** Klawisze windows
 #+BEGIN_SRC emacs-lisp
   ;; make PC keyboard's Win key or other to type Super or Hyper, for emacs running on Windows.
@@ -690,10 +695,10 @@ Ukrywa minor mode'y w statusie.
 #+END_SRC
 ** Pakiet =hungry-delete=
 #+BEGIN_SRC emacs-lisp
-  (use-package hungry-delete
-    :ensure t
-    :config
-    (global-hungry-delete-mode))
+  ;; (use-package hungry-delete
+  ;;   :ensure t
+  ;;   :config
+  ;;   (global-hungry-delete-mode))
 #+END_SRC
 ** Pakiet =expand-region=
 #+BEGIN_SRC emacs-lisp
@@ -778,6 +783,17 @@ W trybach programistycznych numeruje linie.
   ;;   (require 'spaceline-config)
   ;;   (setq powerline-default-separator (quote arrow))
   ;;   (spaceline-spacemacs-theme))
+#+END_SRC
+** Pakiet =multiple-cursors=
+https://github.com/magnars/multiple-cursors.el
+#+BEGIN_SRC emacs-lisp
+  (use-package multiple-cursors
+    :ensure t
+    :bind
+    ("C->" . mc/mark-next-like-this-word)
+    ("C-<" . mc/mark-previous-like-this-word)
+    ("C-c C-<" . mc/mark-all-words-like-this)
+  )
 #+END_SRC
 ** Eksperymenty z =doomline=
 #+BEGIN_SRC emacs-lisp
