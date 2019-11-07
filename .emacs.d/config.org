@@ -795,6 +795,15 @@ https://github.com/magnars/multiple-cursors.el
     ("C-c C-<" . mc/mark-all-words-like-this)
   )
 #+END_SRC
+** Pakiet =rainbow-delimeters=
+#+BEGIN_SRC emacs-lisp
+  (use-package rainbow-delimiters
+    :ensure t
+    :config
+    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+  )
+#+END_SRC
+
 ** Eksperymenty z =doomline=
 #+BEGIN_SRC emacs-lisp
   (use-package all-the-icons
