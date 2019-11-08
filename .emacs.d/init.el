@@ -24,7 +24,7 @@
  '(org-agenda-files (quote ("~/org/praca.org" "~/org/osobiste.org")))
  '(package-selected-packages
    (quote
-    (multiple-cursors projectile omnisharp ox-hugo emojify auto-package-update csharp-mode yasnippet-snippets counsel nyan-mode gruvbox-theme neotree nord-theme nord expand-region hungry-delete popup-kill-ring symon dmenu diminish spaceline spacemacs-theme highlight-symbol jedi flycheck auto-complete magit powershell undo-tree swiper ace-window org zenburn-theme yasnippet which-key use-package try org-bullets helm beacon)))
+    (python-mode company-jedi rainbow-delimiters rainbow-delimeters multiple-cursors projectile omnisharp ox-hugo emojify auto-package-update csharp-mode yasnippet-snippets counsel nyan-mode gruvbox-theme neotree nord-theme nord expand-region hungry-delete popup-kill-ring symon dmenu diminish spaceline spacemacs-theme highlight-symbol jedi flycheck auto-complete magit powershell undo-tree swiper ace-window org zenburn-theme yasnippet which-key use-package try org-bullets helm beacon)))
  '(winner-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

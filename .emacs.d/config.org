@@ -126,6 +126,16 @@ również kod, który umożliwia używanie tych skrótów w org-mode, gdy ten ni
 #+BEGIN_SRC emacs-lisp
   (display-time)
 #+END_SRC
+** Nadpisywanie działania =emacs=
+*** W trybie =bat-mode= uruchamiaj batche asynchronicznie
+#+BEGIN_SRC emacs-lisp
+  (advice-add 'bat-run :override
+              (lambda () 
+                (interactive)
+                (save-buffer)
+                (async-shell-command buffer-file-name))
+              )
+#+END_SRC
 * Dodatkowe funkcje
 ** Kopiowanie całej linii
    Kopiuje całą linię i dodaje ją do =kill-ring=. Podłączone pod
@@ -272,8 +282,8 @@ linii, i przesuwa kursor do nowej linii.
 #+END_SRC
 ** Przeźroczystość
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'default-frame-alist '(alpha . (93 . 60)))
-  (set-frame-parameter nil 'alpha '(93 . 60))
+  (add-to-list 'default-frame-alist '(alpha . (93 . 85)))
+  (set-frame-parameter nil 'alpha '(93 . 85))
 #+END_SRC
 ** Czcionka
 Źródła czcionki na [[https://github.com/adobe-fonts/source-code-pro][GitHub]]
@@ -312,6 +322,12 @@ Chwilowo wyłączone. Za każdym razem i tak się muszę z tym barować.
     :ensure t
     )
 #+END_SRC
+** Whitespace
+Pokazuj spacje w trybie programowym
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'prog-mode-hook 'whitespace-mode)
+#+END_SRC
+
 * Pakiety
 ** Pakiet =Org=
 *** Instalacja
@@ -476,17 +492,17 @@ Rozszerza możliwości ivy?
 ** Pakiet =company=
 Podpowiadacz tekstu w Emacs
 [[http://company-mode.github.io/][Link do githuba]]
-*Uwaga* - Na razie bardzo wkurzający. Na razie lepiej używać [[Pakiet =autocomplete=][Autocomplete]]
 #+BEGIN_SRC emacs-lisp
-  (use-package company
-    :ensure t
-    :init
-    (add-hook 'after-init-hook 'global-company-mode)
-    :config
-    (add-to-list 'company-backends 'company-omnisharp)
-    :bind
-    ("M-<SPC>" . company-complete)
-)
+    (use-package company
+      :ensure t
+      :init
+      (add-hook 'after-init-hook 'global-company-mode)
+      :config
+      (add-to-list 'company-backends 'company-omnisharp)
+      (add-to-list 'company-backends 'company-jedi)
+      :bind
+      ("M-<SPC>" . company-complete)
+  )
 #+END_SRC
 ** Pakiet =Yasnippet=
    Snippety. Uruchamiany przez napisanie w buforze /nazwy/ snippetu i
@@ -529,7 +545,6 @@ Podpowiadacz tekstu w Emacs
               (company-complete-common)
             (indent-for-tab-command)))))
 
-;;  (global-set-key [tab] 'tab-indent-or-complete)
 #+END_SRC
 ** Pakiet =Beacon=
    Przy przełączaniu okien pomaga znaleźć kursor.
@@ -628,6 +643,9 @@ config --global credential.helper wincred=
     :init
     (add-hook 'python-mode-hook 'jedi:setup)
     (add-hook 'python-mode-hook 'jedi:ac-setup))
+
+  (use-package company-jedi
+    :ensure t)
 
 #+END_SRC
 ** Pakiet =highlight-symbol=
@@ -800,6 +818,15 @@ https://github.com/magnars/multiple-cursors.el
     ("C-c C-<" . mc/mark-all-words-like-this)
   )
 #+END_SRC
+** Pakiet =rainbow-delimeters=
+#+BEGIN_SRC emacs-lisp
+  (use-package rainbow-delimiters
+    :ensure t
+    :config
+    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+  )
+#+END_SRC
+
 ** Eksperymenty z =doomline=
 #+BEGIN_SRC emacs-lisp
   (use-package all-the-icons
@@ -926,3 +953,21 @@ Następnie wkładamy to do =modeline'a= co 10 sekund(?)
 
 
 
+* Skrypty do pracy
+** Budowanie Unita
+#+BEGIN_SRC emacs-lisp
+  (defun unit/build ()
+    "Buduje i uruchamia unit-a"
+    (interactive)
+    (async-shell-command
+     ;; command and parameters
+     "c:/work/unit.git/Lib/nant/bin/NAnt.exe -buildfile:c:/work/unit.git/Script/lodz.build build_server_sln build_client deploy_server deploy_client"
+     ;; output buffer
+     "*Unit-build*"
+     ;; name of the error buffer
+     nil
+     )
+    )
+
+  (global-set-key [f9] 'unit/build)
+#+END_SRC
