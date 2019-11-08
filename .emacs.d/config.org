@@ -121,6 +121,17 @@ również kod, który umożliwia używanie tych skrótów w org-mode, gdy ten ni
 (add-hook 'org-shiftdown-final-hook 'windmove-down)
 (add-hook 'org-shiftright-final-hook 'windmove-right)
 #+END_SRC
+** Nadpisywanie działania =emacs=
+*** W trybie =bat-mode= uruchamiaj batche asynchronicznie
+#+BEGIN_SRC emacs-lisp
+  (advice-add 'bat-run :override
+              (lambda () 
+                (interactive)
+                (save-buffer)
+                (async-shell-command buffer-file-name))
+              )
+#+END_SRC
+
 * Dodatkowe funkcje
 ** Kopiowanie całej linii
    Kopiuje całą linię i dodaje ją do =kill-ring=. Podłączone pod
