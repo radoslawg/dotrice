@@ -321,7 +321,7 @@ Chwilowo wyłączone. Za każdym razem i tak się muszę z tym barować.
 ** Whitespace
 Pokazuj spacje w trybie programowym
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'prog-mode-hiik 'whitespace-mode)
+  (add-hook 'prog-mode-hook 'whitespace-mode)
 #+END_SRC
 
 * Pakiety
