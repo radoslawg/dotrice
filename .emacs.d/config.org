@@ -488,17 +488,17 @@ Rozszerza możliwości ivy?
 ** Pakiet =company=
 Podpowiadacz tekstu w Emacs
 [[http://company-mode.github.io/][Link do githuba]]
-*Uwaga* - Na razie bardzo wkurzający. Na razie lepiej używać [[Pakiet =autocomplete=][Autocomplete]]
 #+BEGIN_SRC emacs-lisp
-  (use-package company
-    :ensure t
-    :init
-    (add-hook 'after-init-hook 'global-company-mode)
-    :config
-    (add-to-list 'company-backends 'company-omnisharp)
-    :bind
-    ("M-<SPC>" . company-complete)
-)
+    (use-package company
+      :ensure t
+      :init
+      (add-hook 'after-init-hook 'global-company-mode)
+      :config
+      (add-to-list 'company-backends 'company-omnisharp)
+      (add-to-list 'company-backends 'company-jedi)
+      :bind
+      ("M-<SPC>" . company-complete)
+  )
 #+END_SRC
 ** Pakiet =Yasnippet=
    Snippety. Uruchamiany przez napisanie w buforze /nazwy/ snippetu i
@@ -541,7 +541,6 @@ Podpowiadacz tekstu w Emacs
               (company-complete-common)
             (indent-for-tab-command)))))
 
-;;  (global-set-key [tab] 'tab-indent-or-complete)
 #+END_SRC
 ** Pakiet =Beacon=
    Przy przełączaniu okien pomaga znaleźć kursor.
@@ -640,6 +639,9 @@ config --global credential.helper wincred=
     :init
     (add-hook 'python-mode-hook 'jedi:setup)
     (add-hook 'python-mode-hook 'jedi:ac-setup))
+
+  (use-package company-jedi
+    :ensure t)
 
 #+END_SRC
 ** Pakiet =highlight-symbol=
