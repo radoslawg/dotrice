@@ -26,6 +26,7 @@
 Kasowanie znaku klawiszem "DELETE" nie powinno usuwać całego zaznaczenia. I tak używam =C-w= do tego.
 #+BEGIN_SRC emacs-lisp
   (setq delete-active-region nil)
+  (define-key global-map [C-tab] 'indent-region)
 #+END_SRC
 ** Klawisze windows
 #+BEGIN_SRC emacs-lisp
@@ -120,6 +121,10 @@ również kod, który umożliwia używanie tych skrótów w org-mode, gdy ten ni
 (add-hook 'org-shiftleft-final-hook 'windmove-left)
 (add-hook 'org-shiftdown-final-hook 'windmove-down)
 (add-hook 'org-shiftright-final-hook 'windmove-right)
+#+END_SRC
+** Wyświetl mi godzinę w modeline
+#+BEGIN_SRC emacs-lisp
+  (display-time)
 #+END_SRC
 * Dodatkowe funkcje
 ** Kopiowanie całej linii
