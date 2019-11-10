@@ -26,6 +26,7 @@
 Kasowanie znaku klawiszem "DELETE" nie powinno usuwać całego zaznaczenia. I tak używam =C-w= do tego.
 #+BEGIN_SRC emacs-lisp
   (setq delete-active-region nil)
+  (define-key global-map [C-tab] 'indent-region)
 #+END_SRC
 ** Klawisze windows
 #+BEGIN_SRC emacs-lisp
@@ -121,6 +122,10 @@ również kod, który umożliwia używanie tych skrótów w org-mode, gdy ten ni
 (add-hook 'org-shiftdown-final-hook 'windmove-down)
 (add-hook 'org-shiftright-final-hook 'windmove-right)
 #+END_SRC
+** Wyświetl mi godzinę w modeline
+#+BEGIN_SRC emacs-lisp
+  (display-time)
+#+END_SRC
 ** Nadpisywanie działania =emacs=
 *** W trybie =bat-mode= uruchamiaj batche asynchronicznie
 #+BEGIN_SRC emacs-lisp
@@ -131,7 +136,6 @@ również kod, który umożliwia używanie tych skrótów w org-mode, gdy ten ni
                 (async-shell-command buffer-file-name))
               )
 #+END_SRC
-
 * Dodatkowe funkcje
 ** Kopiowanie całej linii
    Kopiuje całą linię i dodaje ją do =kill-ring=. Podłączone pod
@@ -607,8 +611,14 @@ Podpowiadacz tekstu w Emacs
     :ensure t)
 #+END_SRC
 Aby prośby o hasło działały pod *Windows* musimy skonfigurować gita by używał GUI do zapytań. Warto
-w tym miejscu wspomnieć o tym, żeby skonfigurować *Git* do zapamiętywania haseł poleceniem =git
-config --global credential.helper wincred=
+w tym miejscu sprawdzić:
+- Konfigurację *Git* do zapamiętywania haseł poleceniem =git config --global credential.helper manager=
+- Upewnić się, że windowsowy *ssh-agent* działa/nie jest wyłączony na stałe w usługach windows. :/
+- Że klucze *SSH* są dodane do agent poleceniem =ssh-add ~/.ssh/*_rsa= lub podobnym (obserwować
+  komunikaty! - uprawnienia!)
+- Oraz *Emacs* musi komunikować się przez popupy, więc git musi prosić o hasło do klucza poprzez
+  ui. W tym celu należy (najlepiej) ustawić zmienną systemową np. =set SSH_ASKPASS=c:\Program
+  Files\Git\mingw64\libexec\git-core\git-askpass.exe=. 
 
 #+BEGIN_SRC emacs-lisp
   (setenv "GIT_ASKPASS" "git-gui--askpass")
