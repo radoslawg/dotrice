@@ -272,13 +272,15 @@ linii, i przesuwa kursor do nowej linii.
 * Wygląd
 ** Motyw
 #+BEGIN_SRC emacs-lisp
-      (use-package zenburn-theme
-        :ensure t)
+      ;; (use-package zenburn-theme
+      ;;   :ensure t)
   ;; (use-package monokai-theme
   ;;   :ensure t
   ;;   :init
   ;;   (load-theme 'monokai t nil)
   ;;   )
+  (use-package material-theme
+    :ensure t)
 #+END_SRC
 ** Przeźroczystość
 #+BEGIN_SRC emacs-lisp
@@ -322,10 +324,10 @@ Chwilowo wyłączone. Za każdym razem i tak się muszę z tym barować.
     :ensure t
     )
 #+END_SRC
-** Whitespace
+** WYŁĄCZONE - Whitespace
 Pokazuj spacje w trybie programowym
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'prog-mode-hook 'whitespace-mode)
+;;  (add-hook 'prog-mode-hook 'whitespace-mode)
 #+END_SRC
 
 * Pakiety
@@ -439,11 +441,11 @@ Pokazuje okno zamiast mieszać w statusie
     (ivy-posframe-mode 1)
     )
 
-  (use-package company-posframe
-    :ensure t
-    :config
-    (company-posframe-mode 1)
-    )
+  ;; (use-package company-posframe
+  ;;   :ensure t
+  ;;   :config
+  ;;   (company-posframe-mode 1)
+  ;;   )
 #+END_SRC
 ** Pakiet =counsel=
 Rozszerza możliwości ivy?
@@ -493,16 +495,31 @@ Rozszerza możliwości ivy?
 Podpowiadacz tekstu w Emacs
 [[http://company-mode.github.io/][Link do githuba]]
 #+BEGIN_SRC emacs-lisp
-    (use-package company
-      :ensure t
-      :init
-      (add-hook 'after-init-hook 'global-company-mode)
-      :config
-      (add-to-list 'company-backends 'company-omnisharp)
-      (add-to-list 'company-backends 'company-jedi)
-      :bind
-      ("M-<SPC>" . company-complete)
-  )
+   (use-package company
+     :ensure t
+     :diminish (company-mode . " @")
+     :hook
+     (after-init . global-company-mode)
+     :config
+     (add-to-list 'company-backends 'company-omnisharp)
+     (add-to-list 'company-backends 'company-jedi)
+     (setq company-tooltip-align-annotations t
+           company-idle-delay 0.2
+           ;; min prefix of 2 chars
+           company-minimum-prefix-length 2
+           company-require-match nil)
+     :bind
+     ("M-<SPC>" . company-complete)
+     (:map company-active-map
+           ("C-n" . company-select-next-or-abort)
+           ("C-p" . company-select-previous-or-abort))
+     )
+
+  (use-package company-quickhelp          ; Show help in tooltip
+     :ensure t
+     :defer t
+     :init (with-eval-after-load 'company
+             (company-quickhelp-mode)))
 #+END_SRC
 ** Pakiet =Yasnippet=
    Snippety. Uruchamiany przez napisanie w buforze /nazwy/ snippetu i
@@ -577,7 +594,7 @@ Podpowiadacz tekstu w Emacs
     )
 #+END_SRC
 ** Pakiet =Undo Tree=
-   Więcej informacji na [[https://elpa.gnu.org/packages/undo-tree.html][Stronie elpy]]
+   Więcej informacji na [[https://elpa.gnu.org/packages/undo-tree.html][Stronie elpa]]
 *** Instalacja
 #+BEGIN_SRC emacs-lisp
   (use-package undo-tree
@@ -588,14 +605,10 @@ Podpowiadacz tekstu w Emacs
 *** Skróty klawiszowe
     * =C-_ C-/= (`undo-tree-undo') Undo changes.
     * =M-_ C-?= (`undo-tree-redo') Redo changes.
-    * =undo-tree-switch-branch= Switch undo-tree branch.  (What does this
-      mean? Better press the button and see!)
-    * =C-x u= (`undo-tree-visualize') Visualize the undo tree.  (Better try
-      pressing this button too!)
-    * =C-x r u= (`undo-tree-save-state-to-register') Save current buffer
-      state to register.
-    * =C-x r U= (`undo-tree-restore-state-from-register') Restore buffer
-      state from register.
+    * =undo-tree-switch-branch= Switch undo-tree branch.  (What does this mean? Better press the button and see!)
+    * =C-x u= (`undo-tree-visualize') Visualize the undo tree.  (Better try pressing this button too!)
+    * =C-x r u= (`undo-tree-save-state-to-register') Save current buffer state to register.
+    * =C-x r U= (`undo-tree-restore-state-from-register') Restore buffer state from register.
 ** Pakiet =Powershell=
    Wprowadza tryb do edycji plików =.ps1= czyli =Powershell=. Przynajmniej
    taką mam nadzieję
@@ -640,19 +653,6 @@ w tym miejscu sprawdzić:
     :ensure t
     :init
     (global-flycheck-mode t))
-#+END_SRC
-** Pakiet =jedi=
-   Pakiet uzupełniający dla =Python=.
-#+BEGIN_SRC emacs-lisp
-  (use-package jedi
-    :ensure t
-    :init
-    (add-hook 'python-mode-hook 'jedi:setup)
-    (add-hook 'python-mode-hook 'jedi:ac-setup))
-
-  (use-package company-jedi
-    :ensure t)
-
 #+END_SRC
 ** Pakiet =highlight-symbol=
    Ekwiwalent vimowego =*= oraz =#= + podświetlanie symbolu
@@ -822,6 +822,8 @@ https://github.com/magnars/multiple-cursors.el
     ("C->" . mc/mark-next-like-this-word)
     ("C-<" . mc/mark-previous-like-this-word)
     ("C-c C-<" . mc/mark-all-words-like-this)
+    ("C-S-c C-S-c" . mc/edit-lines)
+    ("C-S-<mouse-1>" . mc/add-cursor-on-click)
   )
 #+END_SRC
 ** Pakiet =rainbow-delimeters=
@@ -891,6 +893,62 @@ https://github.com/magnars/multiple-cursors.el
 
     (setq doom-modeline-vcs-max-length 50)
     )
+#+END_SRC
+** Pakiet =flymake=
+#+BEGIN_SRC emacs-lisp
+  (use-package flymake
+    :ensure t)
+#+END_SRC
+* Python
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'python-mode-hook (lambda () (setq auto-fill-function 'do-auto-fill) (setq fill-column 79)))
+  (add-hook 'python-mode-hook (lambda () (hs-minor-mode 1)))
+  (bind-keys :map prog-mode-map
+             ("<C-S-tab>" . hs-toggle-hiding))
+
+#+END_SRC
+** Pakiet =jedi=
+   Pakiet uzupełniający dla =Python=.
+#+BEGIN_SRC emacs-lisp
+  (use-package jedi
+    :ensure t
+    :init
+    (add-hook 'python-mode-hook 'jedi:setup)
+    (add-hook 'python-mode-hook 'jedi:ac-setup))
+
+  (use-package company-jedi
+    :ensure t)
+#+END_SRC
+** Pakiet =elpy=
+#+BEGIN_SRC emacs-lisp
+  (use-package elpy
+    :ensure t
+    :config
+    (setq python-indent-offset 4)
+    (elpy-enable))
+#+END_SRC
+** Pakiet =pyvenv=
+#+BEGIN_SRC emacs-lisp
+  (use-package pyvenv
+    :ensure t
+    :init
+    (pyvenv-mode 1)
+    (pyvenv-tracking-mode 1))
+#+END_SRC
+** Formatowanie i lint dla =python=
+#+BEGIN_SRC emacs-lisp
+  (use-package py-autopep8
+    :ensure t
+    :config
+    (add-hook 'elpy-mode-hook #'py-autopep8-enable-on-save))
+
+  (use-package blacken
+    :ensure t)
+#+END_SRC
+** Konfiguracja =flymake= dla python
+#+BEGIN_SRC emacs-lisp
+  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+  (add-hook 'elpy-mode-hook 'flycheck-mode)
 #+END_SRC
 * Mapowanie klawiszy
   - =C-c c e= - otwórz config
