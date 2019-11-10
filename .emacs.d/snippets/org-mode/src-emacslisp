@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: org mode #+BEGIN-SRC for emacs-lisp
+# key: <sel
+# --
+#+BEGIN_SRC emacs-lisp
+$0
+#+END_SRC
