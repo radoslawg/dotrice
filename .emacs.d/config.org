@@ -511,10 +511,7 @@ Podpowiadacz tekstu w Emacs
      :config
      (add-to-list 'company-backends 'company-omnisharp)
      (add-to-list 'company-backends 'company-jedi)
-     (setq company-tooltip-align-annotations t
-           company-idle-delay 0.2
-           ;; min prefix of 2 chars
-           company-minimum-prefix-length 2
+     (setq company-idle-delay 1
            company-require-match nil)
      :bind
      ("M-<SPC>" . company-complete)
@@ -523,11 +520,11 @@ Podpowiadacz tekstu w Emacs
            ("C-p" . company-select-previous-or-abort))
      )
 
-  (use-package company-quickhelp          ; Show help in tooltip
+  (use-package company-quickhelp
      :ensure t
-     :defer t
      :init (with-eval-after-load 'company
              (company-quickhelp-mode)))
+
 #+END_SRC
 ** Pakiet =Yasnippet=
    Snippety. Uruchamiany przez napisanie w buforze /nazwy/ snippetu i
@@ -929,13 +926,13 @@ W trybach programistycznych numeruje linie.
     (setq python-indent-offset 4)
     (elpy-enable))
 #+END_SRC
-** Pakiet =pyvenv=
+** WYŁĄCZONY Pakiet =pyvenv=
 #+BEGIN_SRC emacs-lisp
-  (use-package pyvenv
-    :ensure t
-    :init
-    (pyvenv-mode 1)
-    (pyvenv-tracking-mode 1))
+  ;; (use-package pyvenv
+    ;; :ensure t
+    ;; :init
+    ;; (pyvenv-mode 1)
+    ;; (pyvenv-tracking-mode 1))
 #+END_SRC
 ** Formatowanie i lint dla =python=
 #+BEGIN_SRC emacs-lisp
