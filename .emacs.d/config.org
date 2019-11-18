@@ -763,17 +763,6 @@ Nyan mode pokazuje pozycję w pliku przy pomocy... Nyan cat'a ;)
     :init
     (nyan-mode 1))
 #+END_SRC
-** Pakiet =nlinum=
-W trybach programistycznych numeruje linie.
-#+BEGIN_SRC emacs-lisp
-  (use-package nlinum
-    :ensure t
-    :config
-    (setq nlinum-highlight-current-line t)
-    :init
-    (add-hook 'prog-mode-hook 'nlinum-mode)
-    )
-#+END_SRC
 ** Pakiet =ox-hugo=
 #+BEGIN_SRC emacs-lisp
   (use-package ox-hugo
@@ -907,13 +896,18 @@ https://github.com/magnars/multiple-cursors.el
   (use-package flymake
     :ensure t)
 #+END_SRC
+* Programowanie
+** Numerowanie linii - od Emacs 26
+W trybach programistycznych numeruje linie.
+#+BEGIN_SRC emacs-lisp
+    (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+#+END_SRC
 * Python
 #+BEGIN_SRC emacs-lisp
   (add-hook 'python-mode-hook (lambda () (setq auto-fill-function 'do-auto-fill) (setq fill-column 79)))
   (add-hook 'python-mode-hook (lambda () (hs-minor-mode 1)))
   (bind-keys :map prog-mode-map
              ("<C-S-tab>" . hs-toggle-hiding))
-
 #+END_SRC
 ** Pakiet =jedi=
    Pakiet uzupełniający dla =Python=.
