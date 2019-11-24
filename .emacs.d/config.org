@@ -368,7 +368,7 @@ Pokazuj spacje w trybie programowym
 			     (org-indent-mode 1)
 			     ))
   (setq org-hide-leading-stars 't)
-  (setq org-directory "~/org/")
+  (setq org-directory "~/MojePliki/org/")
   (setq org-agenda-skip-unavailable-files t)
   (setq org-agenda-start-on-weekday nil)
 #+END_SRC
@@ -377,7 +377,7 @@ Pokazuj spacje w trybie programowym
 #+BEGIN_SRC emacs-lisp
 (setq org-todo-keywords
       (quote (
-	      (sequence "TODO(t)" "ROZPOCZĘTE(r)" "TERAZ(t)" "OCZEKUJE(o)" "WSTRZYMANE(s)" "KIEDYŚ(k)" "|" "ZAKOŃCZONE(z)" "ANULOWANE(a)" )
+	      (sequence "TODO(t)" "NASTĘPNE(n)" "ROZPOCZĘTE(r)" "OCZEKUJE(o)" "WSTRZYMANE(s)" "KIEDYŚ(k)" "|" "ZAKOŃCZONE(z)" "ANULOWANE(a)" )
        ))
 )
 #+END_SRC
