@@ -228,8 +228,8 @@ linii, i przesuwa kursor do nowej linii.
      (cond ((looking-at "_") (geosoft-backward-word))
 	   (t (forward-char 1))))
 
-  ;; (global-set-key (kbd "M-f") 'geosoft-forward-word)
-  ;; (global-set-key (kbd "M-b") 'geosoft-backward-word)
+  (global-set-key (kbd "M-f") 'geosoft-forward-word)
+  (global-set-key (kbd "M-b") 'geosoft-backward-word)
 #+END_SRC
 ** Lepsze dzielenie okien
    Dzielenie okien oraz przesunięcie kursora do nowego okna
