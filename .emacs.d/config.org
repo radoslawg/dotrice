@@ -336,21 +336,21 @@ linii, i przesuwa kursor do nowej linii.
 ** Whitespace
 Pokazuj spacje w trybie programowym
 #+BEGIN_SRC emacs-lisp
-  (set-face-attribute 'whitespace-space nil :foreground "gray20")
   ;; Make whitespace-mode with very basic background coloring for whitespaces.
   ;; http://ergoemacs.org/emacs/whitespace-mode.html
   (setq whitespace-style (quote (face spaces space-mark tabs tab-mark space-after-tab space-before-tab empty trailing)))
 
-  ;; Make whitespace-mode and whitespace-newline-mode use “¶” for end of line char and “?” for tab.
   (setq whitespace-display-mappings
-        ;; all numbers are unicode codepoint in decimal. e.g. (insert-char 182 1)
         '(
-          (space-mark 32 [183] [46]) ; SPACE 32 ? ?, 183 MIDDLE DOT ?·?, 46 FULL STOP ?.?
-          (newline-mark 10 [182 10]) ; LINE FEED,
-          (tab-mark 9 [9655 9] [92 9]) ; tab
+          (space-mark 32 [183] [46])
+          (newline-mark 10 [182 10])
+          (tab-mark 9 [9655 9] [92 9])
           ))
 
   (add-hook 'prog-mode-hook 'whitespace-mode)
+  (whitespace-mode 1)
+  (set-face-attribute 'whitespace-space nil :foreground "gray20")
+  (whitespace-mode 0)
 #+END_SRC
 
 * Pakiety
