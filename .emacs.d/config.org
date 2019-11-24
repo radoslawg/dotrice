@@ -332,10 +332,24 @@ Chwilowo wy≈ÇƒÖczone. Za ka≈ºdym razem i tak siƒô muszƒô z tym barowaƒá.
     :ensure t
     )
 #+END_SRC
-** WY≈ÅƒÑCZONE - Whitespace
+** Whitespace
 Pokazuj spacje w trybie programowym
 #+BEGIN_SRC emacs-lisp
-;;  (add-hook 'prog-mode-hook 'whitespace-mode)
+  (set-face-attribute 'whitespace-space nil :foreground "gray20")
+  ;; Make whitespace-mode with very basic background coloring for whitespaces.
+  ;; http://ergoemacs.org/emacs/whitespace-mode.html
+  (setq whitespace-style (quote (face spaces space-mark tabs tab-mark space-after-tab space-before-tab empty trailing)))
+
+  ;; Make whitespace-mode and whitespace-newline-mode use ì∂î for end of line char and ì?î for tab.
+  (setq whitespace-display-mappings
+        ;; all numbers are unicode codepoint in decimal. e.g. (insert-char 182 1)
+        '(
+          (space-mark 32 [183] [46]) ; SPACE 32 ? ?, 183 MIDDLE DOT ?∑?, 46 FULL STOP ?.?
+          (newline-mark 10 [182 10]) ; LINE FEED,
+          (tab-mark 9 [9655 9] [92 9]) ; tab
+          ))
+
+  (add-hook 'prog-mode-hook 'whitespace-mode)
 #+END_SRC
 
 * Pakiety

@@ -26,10 +26,4 @@
    (quote
     (abl-mode virtualenvwrapper company-quickhelp material-theme blacken py-autopep8 python-mode company-jedi rainbow-delimiters rainbow-delimeters multiple-cursors projectile omnisharp ox-hugo emojify auto-package-update csharp-mode yasnippet-snippets counsel nyan-mode gruvbox-theme neotree nord-theme nord expand-region hungry-delete popup-kill-ring symon dmenu diminish spaceline spacemacs-theme highlight-symbol jedi flycheck auto-complete magit powershell undo-tree swiper ace-window org zenburn-theme yasnippet which-key use-package try org-bullets helm beacon)))
  '(winner-mode t))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(aw-leading-char-face ((t (:inherit ace-jump-face-foreground :height 3.0)))))
 (put 'dired-find-alternate-file 'disabled nil)
