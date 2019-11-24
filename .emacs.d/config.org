@@ -425,7 +425,8 @@ Pokazuj spacje w trybie programowym
 *** Agenda
 **** Pliki agendy
   #+BEGIN_SRC emacs-lisp
-    (setq org-agenda-files (list org-directory) )
+;;    (setq org-agenda-files (list org-directory) )
+(setq org-agenda-files (list "~/MojePliki/org"))
   #+END_SRC
 **** Zadania zaplanowane na przyszłość nie pojawią się na liście =TODO=
  #+BEGIN_SRC emacs-lisp
