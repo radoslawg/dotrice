@@ -119,16 +119,18 @@ Przenosi kopie zapasowe do katalogu =~/.emacs-saves/= i zostawia kilka kopii
    version-control t)
 #+END_SRC
 ** Funkcja =windmove= 
-Pozwala przełączać się pomiędzy oknami za pomocą strzałek połączonych z klawiszem
-=shift=. Np. =shift-prawo=. Ponieważ w =org-mode= =S-prawo= itd. jest zarezerwowane, dodany jest
-również kod, który umożliwia używanie tych skrótów w org-mode, gdy ten nic z nimi nie robi.
+Pozwala przełączać się pomiędzy oknami za pomocą strzałek połączonych z klawiszem =alt-Window=. 
 #+BEGIN_SRC emacs-lisp
-(windmove-default-keybindings)
+;;(windmove-default-keybindings)
+(global-set-key (kbd "M-s-<left>")  'windmove-left)
+(global-set-key (kbd "M-s-<right>") 'windmove-right)
+(global-set-key (kbd "M-s-<up>")    'windmove-up)
+(global-set-key (kbd "M-s-<down>")  'windmove-down)
 ;; Make windmove work in org-mode:
-(add-hook 'org-shiftup-final-hook 'windmove-up)
-(add-hook 'org-shiftleft-final-hook 'windmove-left)
-(add-hook 'org-shiftdown-final-hook 'windmove-down)
-(add-hook 'org-shiftright-final-hook 'windmove-right)
+;;(add-hook 'org-shiftup-final-hook 'windmove-up)
+;;(add-hook 'org-shiftleft-final-hook 'windmove-left)
+;;(add-hook 'org-shiftdown-final-hook 'windmove-down)
+;;(add-hook 'org-shiftright-final-hook 'windmove-right)
 #+END_SRC
 ** Wyświetl mi godzinę w modeline
 #+BEGIN_SRC emacs-lisp
