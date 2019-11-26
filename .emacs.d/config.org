@@ -922,6 +922,12 @@ https://github.com/magnars/multiple-cursors.el
   (use-package flymake
     :ensure t)
 #+END_SRC
+** Pakiet =iedit=
+#+BEGIN_SRC emacs-lisp
+  (use-package iedit
+    :ensure t)
+#+END_SRC
+
 * Programowanie
 ** Numerowanie linii - od Emacs 26
 W trybach programistycznych numeruje linie.
