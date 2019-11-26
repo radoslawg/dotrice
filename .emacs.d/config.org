@@ -391,10 +391,12 @@ Pokazuj spacje w trybie programowym
 #+END_SRC
 *** Pakiet =org-bullets=
 #+BEGIN_SRC emacs-lisp
-  (use-package org-bullets
-    :ensure t
-    :config
-    (add-hook 'org-mode-hook (lambda() (org-bullets-mode 1))))
+  ;;\22B9 \22C2 ? \u233 ? ? \u2234  ?
+     (use-package org-bullets
+       :ensure t
+       :config
+       (setq org-bullets-bullet-list '("\u2836")) ;; eweuntualnie 2894
+       (add-hook 'org-mode-hook (lambda() (org-bullets-mode 1))))
 #+END_SRC
 *** Enter /wchodzi/ w linki
 #+BEGIN_SRC emacs-lisp
@@ -432,6 +434,7 @@ Pokazuj spacje w trybie programowym
  #+BEGIN_SRC emacs-lisp
    (setq org-agenda-todo-ignore-scheduled (quote future))
  #+END_SRC
+
 **** Zadania z =DEADLINE=, które kończą się /niedługo/ znajdą się na liście =TODO=.
  #+BEGIN_SRC emacs-lisp
    (setq org-agenda-todo-ignore-deadlines (quote far))
