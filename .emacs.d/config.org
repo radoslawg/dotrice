@@ -374,10 +374,17 @@ Pokazuj spacje w trybie programowym
 *** Definicja polskich słów kluczowych
     Zostawiamy =TODO= bo to zbyt często używane słowo kluczowy w org.
 #+BEGIN_SRC emacs-lisp
-(setq org-todo-keywords
-      (quote (
-	      (sequence "TODO(t)" "NASTĘPNE(n)" "ROZPOCZĘTE(r)" "OCZEKUJE(o)" "WSTRZYMANE(s)" "KIEDYŚ(k)" "|" "ZAKOŃCZONE(z)" "ANULOWANE(a)" )
-       ))
+(setq org-todo-keywords '((sequence "TODO(t)" "NASTĘPNE(n)" "ROZPOCZĘTE(r)" "OCZEKUJE(o)" "WSTRZYMANE(s)" "KIEDYŚ(k)" "|" "ZAKOŃCZONE(z)" "ANULOWANE(a)" ))
+       org-todo-keyword-faces 
+       '(
+         ("TODO" :foreground "#ff6c85" :weight bold :underline t)
+         ("NASTĘPNE" :foreground "#5f5efe" :weight normal :underline t)
+         ("ROZPOCZĘTE" :foreground "#0098dd" :weight bold :underline t)
+         ("OCZEKUJE" :foreground "#9f7efe" :weight normal :underline t)
+         ("WSTRZYMANE" :foreground "#707070" :weight normal :underline t)
+         ("KIEDYŚ" :foreground "#80A080" :weight normal :underline t)
+         ("ZAKOŃCZONE" :foreground "#60c15f" :weight normal :underline t)
+         ("ANULOWANE" :foreground "#40913f" :weight normal :underline t))
 )
 #+END_SRC
 *** Zadania z datą i =TODO= powinny się znaleźć na liście rzeczy do zrobienia
@@ -391,10 +398,12 @@ Pokazuj spacje w trybie programowym
 #+END_SRC
 *** Pakiet =org-bullets=
 #+BEGIN_SRC emacs-lisp
-  (use-package org-bullets
-    :ensure t
-    :config
-    (add-hook 'org-mode-hook (lambda() (org-bullets-mode 1))))
+  ;;\22B9 \22C2 ? \u233 ? ? \u2234  ?
+     (use-package org-bullets
+       :ensure t
+       :config
+       (setq org-bullets-bullet-list '("\u2836")) ;; eweuntualnie 2894
+       (add-hook 'org-mode-hook (lambda() (org-bullets-mode 1))))
 #+END_SRC
 *** Enter /wchodzi/ w linki
 #+BEGIN_SRC emacs-lisp
@@ -432,6 +441,7 @@ Pokazuj spacje w trybie programowym
  #+BEGIN_SRC emacs-lisp
    (setq org-agenda-todo-ignore-scheduled (quote future))
  #+END_SRC
+
 **** Zadania z =DEADLINE=, które kończą się /niedługo/ znajdą się na liście =TODO=.
  #+BEGIN_SRC emacs-lisp
    (setq org-agenda-todo-ignore-deadlines (quote far))
@@ -443,13 +453,13 @@ Pokazuj spacje w trybie programowym
 ** Pakiet =ivy=
 Zamiast pakietu =helm= - uzupełnianie komend
 #+BEGIN_SRC emacs-lisp
-    (use-package ivy
-      :ensure t
-      :config
-      (ivy-mode 1)
-      (setq ivy-use-virtual-buffers t)
-      (setq ivy-count-format "(%d/%d) ")
-      )
+  ;; (use-package ivy
+  ;;   :ensure t
+  ;;   :config
+  ;;   (ivy-mode 1)
+  ;;   (setq ivy-use-virtual-buffers t)
+  ;;   (setq ivy-count-format "(%d/%d) ")
+  ;;   )
 #+END_SRC
 ** Pakiet =posframe= i inne
 Pokazuje okno zamiast mieszać w statusie
@@ -458,12 +468,21 @@ Pokazuje okno zamiast mieszać w statusie
     :ensure t
     )
 
-  (use-package ivy-posframe
-    :ensure t
-    :config
-    (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display)))
-    (ivy-posframe-mode 1)
-    )
+  ;; (use-package helm-posframe
+  ;;   :ensure t
+  ;;   :config
+  ;;   (helm-posframe-enable)
+  ;;   (setq helm-posframe-parameters
+  ;;     '((left-fringe . 10)
+  ;;       (right-fringe . 10)))
+  ;;   )
+
+  ;; (use-package ivy-posframe
+  ;;   :ensure t
+  ;;   :config
+  ;;   (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display)))
+  ;;   (ivy-posframe-mode 1)
+  ;;   )
 
   ;; (use-package company-posframe
   ;;   :ensure t
@@ -492,21 +511,21 @@ Rozszerza możliwości ivy?
 #+END_SRC
 ** Pakiet =Helm=
 #+BEGIN_SRC emacs-lisp
-  ;;   (use-package helm
-  ;;     :ensure t
-  ;;     :init (helm-mode 1)
-  ;;     :config
-  ;;     (setq helm-boring-buffer-regexp-list (list (rx "*magit-") (rx "*helm")))
-  ;;     :bind
-  ;;     ("M-x" . helm-M-x)
-  ;;     ("C-x C-b" . helm-buffers-list)
-  ;;     ("C-x C-f" . helm-find-files)
-  ;;     ("C-x r b" . helm-bookmarks)
-  ;; )
+    (use-package helm
+      :ensure t
+      :init (helm-mode 1)
+      :config
+      (setq helm-boring-buffer-regexp-list (list (rx "*magit-") (rx "*helm")))
+      :bind
+      ("M-x" . helm-M-x)
+      ("C-x C-b" . helm-buffers-list)
+      ("C-x C-f" . helm-find-files)
+      ("C-x r b" . helm-bookmarks)
+  )
 #+END_SRC
 *** =TAB= powinien uzupełniać wpisy, a nie pokazywać pomoc
 #+BEGIN_SRC emacs-lisp
-;;  (define-key helm-find-files-map "\t" 'helm-execute-persistent-action)
+(define-key helm-find-files-map "\t" 'helm-execute-persistent-action)
 #+END_SRC
 ** Pakiet =Which-key=
 #+BEGIN_SRC emacs-lisp
@@ -658,14 +677,15 @@ w tym miejscu sprawdzić:
   (setenv "GIT_ASKPASS" "git-gui--askpass")
 #+END_SRC
 ** Pakiet =avy=
-   =M-s= szuka litery na ekranie. Pozwala na szybkie przemieszczenie się do
-   tej litery.
+   =M-s= wpisujesz pierwsze litery słowa i przeskakuje lub daje wybór jeśli znalazł więcej
+   =M-S= wpisujesz tylko jedną literę. Chyba mniej wygodne.
+   =M-l= Daje wybór linii
 #+BEGIN_SRC emacs-lisp
   (use-package avy
     :ensure t
-    :bind ("M-s" . avy-goto-char)
+    :bind ("M-s" . avy-goto-char-timer)
     ("M-l" . avy-goto-line)
-    ("M-S" . avy-goto-char-timer))
+    ("M-S" . avy-goto-char))
 #+END_SRC
 ** Pakiet =flycheck=
 *** Instalacja
@@ -909,6 +929,12 @@ https://github.com/magnars/multiple-cursors.el
   (use-package flymake
     :ensure t)
 #+END_SRC
+** Pakiet =iedit=
+#+BEGIN_SRC emacs-lisp
+  (use-package iedit
+    :ensure t)
+#+END_SRC
+
 * Programowanie
 ** Numerowanie linii - od Emacs 26
 W trybach programistycznych numeruje linie.
