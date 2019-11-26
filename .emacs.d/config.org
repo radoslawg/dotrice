@@ -667,14 +667,15 @@ w tym miejscu sprawdzić:
   (setenv "GIT_ASKPASS" "git-gui--askpass")
 #+END_SRC
 ** Pakiet =avy=
-   =M-s= szuka litery na ekranie. Pozwala na szybkie przemieszczenie się do
-   tej litery.
+   =M-s= wpisujesz pierwsze litery słowa i przeskakuje lub daje wybór jeśli znalazł więcej
+   =M-S= wpisujesz tylko jedną literę. Chyba mniej wygodne.
+   =M-l= Daje wybór linii
 #+BEGIN_SRC emacs-lisp
   (use-package avy
     :ensure t
-    :bind ("M-s" . avy-goto-char)
+    :bind ("M-s" . avy-goto-char-timer)
     ("M-l" . avy-goto-line)
-    ("M-S" . avy-goto-char-timer))
+    ("M-S" . avy-goto-char))
 #+END_SRC
 ** Pakiet =flycheck=
 *** Instalacja
