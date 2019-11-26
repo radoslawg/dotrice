@@ -443,13 +443,13 @@ Pokazuj spacje w trybie programowym
 ** Pakiet =ivy=
 Zamiast pakietu =helm= - uzupełnianie komend
 #+BEGIN_SRC emacs-lisp
-    (use-package ivy
-      :ensure t
-      :config
-      (ivy-mode 1)
-      (setq ivy-use-virtual-buffers t)
-      (setq ivy-count-format "(%d/%d) ")
-      )
+  ;; (use-package ivy
+  ;;   :ensure t
+  ;;   :config
+  ;;   (ivy-mode 1)
+  ;;   (setq ivy-use-virtual-buffers t)
+  ;;   (setq ivy-count-format "(%d/%d) ")
+  ;;   )
 #+END_SRC
 ** Pakiet =posframe= i inne
 Pokazuje okno zamiast mieszać w statusie
@@ -458,12 +458,21 @@ Pokazuje okno zamiast mieszać w statusie
     :ensure t
     )
 
-  (use-package ivy-posframe
-    :ensure t
-    :config
-    (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display)))
-    (ivy-posframe-mode 1)
-    )
+  ;; (use-package helm-posframe
+  ;;   :ensure t
+  ;;   :config
+  ;;   (helm-posframe-enable)
+  ;;   (setq helm-posframe-parameters
+  ;;     '((left-fringe . 10)
+  ;;       (right-fringe . 10)))
+  ;;   )
+
+  ;; (use-package ivy-posframe
+  ;;   :ensure t
+  ;;   :config
+  ;;   (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display)))
+  ;;   (ivy-posframe-mode 1)
+  ;;   )
 
   ;; (use-package company-posframe
   ;;   :ensure t
@@ -492,21 +501,21 @@ Rozszerza możliwości ivy?
 #+END_SRC
 ** Pakiet =Helm=
 #+BEGIN_SRC emacs-lisp
-  ;;   (use-package helm
-  ;;     :ensure t
-  ;;     :init (helm-mode 1)
-  ;;     :config
-  ;;     (setq helm-boring-buffer-regexp-list (list (rx "*magit-") (rx "*helm")))
-  ;;     :bind
-  ;;     ("M-x" . helm-M-x)
-  ;;     ("C-x C-b" . helm-buffers-list)
-  ;;     ("C-x C-f" . helm-find-files)
-  ;;     ("C-x r b" . helm-bookmarks)
-  ;; )
+    (use-package helm
+      :ensure t
+      :init (helm-mode 1)
+      :config
+      (setq helm-boring-buffer-regexp-list (list (rx "*magit-") (rx "*helm")))
+      :bind
+      ("M-x" . helm-M-x)
+      ("C-x C-b" . helm-buffers-list)
+      ("C-x C-f" . helm-find-files)
+      ("C-x r b" . helm-bookmarks)
+  )
 #+END_SRC
 *** =TAB= powinien uzupełniać wpisy, a nie pokazywać pomoc
 #+BEGIN_SRC emacs-lisp
-;;  (define-key helm-find-files-map "\t" 'helm-execute-persistent-action)
+(define-key helm-find-files-map "\t" 'helm-execute-persistent-action)
 #+END_SRC
 ** Pakiet =Which-key=
 #+BEGIN_SRC emacs-lisp
