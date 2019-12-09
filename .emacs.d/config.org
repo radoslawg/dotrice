@@ -678,6 +678,7 @@ Aby prośby o hasło działały pod *Windows* musimy skonfigurować gita by uży
 w tym miejscu sprawdzić:
 - Konfigurację *Git* do zapamiętywania haseł poleceniem =git config --global credential.helper manager=
 - Upewnić się, że windowsowy *ssh-agent* działa/nie jest wyłączony na stałe w usługach windows. :/
+  Pod Windows 10 nosi nazwę =OpenSSH Authentication Agent=
 - Że klucze *SSH* są dodane do agent poleceniem =ssh-add ~/.ssh/*_rsa= lub podobnym (obserwować
   komunikaty! - uprawnienia!)
 - Oraz *Emacs* musi komunikować się przez popupy, więc git musi prosić o hasło do klucza poprzez
