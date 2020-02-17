@@ -464,6 +464,14 @@ Pokazuj spacje w trybie programowym
      )
         )
 #+END_SRC
+*** Refile
+#+BEGIN_SRC emacs-lisp
+  (setq org-refile-targets (quote (("organizator.org" :maxlevel . 2)
+                                   )))
+  (setq org-outline-path-complete-in-steps nil)
+  (setq org-refile-use-outline-path t)
+#+END_SRC
+
 *** Agenda
 **** Pliki agendy
   #+BEGIN_SRC emacs-lisp
