@@ -440,9 +440,19 @@ Pokazuj spacje w trybie programowym
 *** Szablony Org-capture
 #+BEGIN_SRC emacs-lisp
   (setq org-capture-templates
-	'(
-	("t" "do zrobienia" entry (file "refile.org") "* TODO %?\n%U\n%a" )
-  ))
+        '(
+     ;; TODO     (t) Todo template
+     ("t" "ToDo" entry (file "refile.org")
+      "* TODO %? %U
+    :LOGBOOK:
+    - State \"TODO\"       from \"\"           %U
+    :END:" :empty-lines 1)
+     ("n" "Notatka" entry (file "refile.org")
+      "* %? %U" :empty-lines 1)
+     ("r" "RPG" entry (file "refile.org")
+      "* %? %U :rpg:" :empty-lines 1)
+     )
+        )
 #+END_SRC
 *** Agenda
 **** Pliki agendy
