@@ -1,5 +1,7 @@
 ## -*- coding: utf-8;mode: org;  -*-
 * Konfiguracja systemu operacyjnego
+- Należy zainstalować czcionkę Iosevka
+- Należy zainstalować czcionkę All-the-icons
 - Należy ustawić zmienną systemową =ALTERNATE_EDITOR= na =c:\emacs\bin\runemacs.exe=
 - Zmienna systemowa =EMACS_SERVER_FILE= na =c:\home\.emacs.d\server\emacs-server-file= (a właściwie
   na unikalną nazwę pliku dla danego komputera
