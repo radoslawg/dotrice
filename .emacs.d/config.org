@@ -369,6 +369,10 @@ Pokazuj spacje w trybie programowym
   (use-package org
     :ensure t)
 #+END_SRC
+*** Logowanie
+#+BEGIN_SRC emacs-lisp
+  (setq org-log-into-drawer t)
+#+END_SRC
 *** Podstawowe ustawienia
 #+BEGIN_SRC emacs-lisp
   (add-hook 'org-mode-hook (lambda()
