@@ -283,6 +283,15 @@ linii, i przesuwa kursor do nowej linii.
     (interactive)
     (kill-buffer (current-buffer)))
 #+END_SRC
+** Wstawianie nieaktywnego timestampu w trybie =org=  
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-c C-.")
+                  (lambda()
+                    (interactive)
+                    (setq current-prefix-arg '(16))
+                    (call-interactively 'org-time-stamp-inactive)))
+#+END_SRC
+
 * Obejścia problemów
 ** Problem z wydajnością czcionek
    Odczuwalny bardzo przy korzystaniu z pakietu =org-bullets=
