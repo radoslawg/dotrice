@@ -1,10 +1,11 @@
 ## -*- coding: utf-8;mode: org;  -*-
 * Konfiguracja systemu operacyjnego
 - Należy ustawić zmienną systemową =ALTERNATE_EDITOR= na =c:\emacs\bin\runemacs.exe=
-- Zmienna systemowa =EMACS_SERVER_FILE= na =c:\home\.emacs.d\server\emacs-server-file= (a właściwie
-  na unikalną nazwę pliku dla danego komputera
+- Zmienna systemowa =EMACS_SERVER_FILE= na =c:\home\.emacs.d\server\emacs-server-file= (konfiguracja
+  nazwy pliku jest dalej w tym pliku. Na chwilę pisania nie jest zależna od komputera <<ale i nie
+  synchronizowana pomiędzy nimi>>)
 - =HOME= ustawione na =c:\home=
-- Dla pythona =WORKON-HOME= ustawione na =c:\home\MojePliki\Python=
+- Dla pythona =WORKON_HOME= ustawione na =c:\home\MojePliki\Python=
 - =Total Commander= edytor powinien zostać ustawiony na =C:\emacs\bin\emacsclientw.exe "%1"=
 * Podstawowe funkcje menadżera pakietów
 ** Pakiet =use=
