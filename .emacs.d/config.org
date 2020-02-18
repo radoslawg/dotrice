@@ -1044,6 +1044,9 @@ W trybach programistycznych numeruje linie.
 * Mapowanie klawiszy
   - =C-c c e= - otwórz config
   - =C-c c r= - przeładuj config
+  - =C-c c o= - otwórz organizer
+  - =C-c c w= - otwórz plik refile
+  - =C-c c j= - otwórz journal
   - =C-M-S-k= - kopiuje do =killring= całą linię
   - =C-S-r= - przywraca plik
   - =C-M-k= - łączy linię z następną
@@ -1052,6 +1055,9 @@ W trybach programistycznych numeruje linie.
   (global-set-key (kbd "C-M-S-k") 'copy-line)
   (global-set-key (kbd "C-c c e") 'config-visit)
   (global-set-key (kbd "C-c c r") 'config-reload)
+  (global-set-key (kbd "C-c c o") '(lambda()(interactive)(find-file "~/MojePliki/org/organizator.org")))
+  (global-set-key (kbd "C-c c w") '(lambda()(interactive)(find-file "~/MojePliki/org/refile.org")))
+  (global-set-key (kbd "C-c c j") '(lambda()(interactive)(find-file "~/MojePliki/org/journal.org")))
   (global-set-key (kbd "C-S-r") 'revert-buffer)
   (global-set-key [remap split-window-below] 'split-and-follow-window-horizontally)
   (global-set-key [remap split-window-right] 'split-and-follow-window-vertically)
