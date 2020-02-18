@@ -388,13 +388,14 @@ Pokazuj spacje w trybie programowym
 *** Podstawowe ustawienia
 #+BEGIN_SRC emacs-lisp
   (add-hook 'org-mode-hook (lambda()
-			     (auto-fill-mode 1)
-			     (org-indent-mode 1)
-			     ))
+                             (auto-fill-mode 1)
+                             (org-indent-mode 1)
+                             ))
   (setq org-hide-leading-stars 't)
   (setq org-directory "~/MojePliki/org/")
   (setq org-agenda-skip-unavailable-files t)
   (setq org-agenda-start-on-weekday nil)
+  (setq org-tags-column 99)
 #+END_SRC
 *** Definicja polskich słów kluczowych
     Zostawiamy =TODO= bo to zbyt często używane słowo kluczowy w org.
