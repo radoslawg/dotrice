@@ -461,6 +461,12 @@ Pokazuj spacje w trybie programowym
       "* %? %U" :empty-lines 1)
      ("r" "RPG" entry (file "refile.org")
       "* %? %U :rpg:" :empty-lines 1)
+     ("j" "Journal" entry (file+datetree "journal.org")
+      "* %?
+  :PROPERTIES:
+  :CREATED: %U
+  :END:
+  " :empty-lines 1)
      )
         )
 #+END_SRC
