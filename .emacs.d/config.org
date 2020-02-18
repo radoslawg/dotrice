@@ -348,7 +348,7 @@ linii, i przesuwa kursor do nowej linii.
 #+BEGIN_SRC emacs-lisp
   (use-package emojify
     :config (setq emojify-display-style 'image)
-            (setq emojify-emoji-set "emojione-v2.2.6")
+            (setq emojify-emoji-set "twemoji-v2-22")
     :init (global-emojify-mode 1)
     :bind ("C-." . emojify-insert-emoji)
     :ensure t
