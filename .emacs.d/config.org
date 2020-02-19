@@ -350,7 +350,7 @@ linii, i przesuwa kursor do nowej linii.
     :config (setq emojify-display-style 'image)
             (setq emojify-emoji-set "twemoji-v2-22")
     :init (global-emojify-mode 1)
-    :bind ("C-." . emojify-insert-emoji)
+    :bind ("C-. ." . emojify-insert-emoji)
     :ensure t
     )
 #+END_SRC
@@ -1077,8 +1077,8 @@ W trybach programistycznych numeruje linie.
   (global-set-key [remap kill-line] 'radekg-kill-line)
   (global-set-key (kbd "C-M-k") 'radekg-join-line) 
   (global-set-key [remap kill-buffer] 'kill-curr-buffer)
-  (global-set-key (kbd "C-c >") '(lambda()(interactive)(insert "➡")))
-  (global-set-key (kbd "C-c <") '(lambda()(interactive)(insert "⬅")))
+  (global-set-key (kbd "C-. >") '(lambda()(interactive)(insert "➡")))
+  (global-set-key (kbd "C-. <") '(lambda()(interactive)(insert "⬅")))
  #+END_SRC 
 *** Tryb org
 **** Mapowanie klawiszy (lokalne)
