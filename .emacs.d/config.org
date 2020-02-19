@@ -400,7 +400,7 @@ Pokazuj spacje w trybie programowym
 *** Definicja polskich słów kluczowych
     Zostawiamy =TODO= bo to zbyt często używane słowo kluczowy w org.
 #+BEGIN_SRC emacs-lisp
-(setq org-todo-keywords '((sequence "TODO(t!)" "NASTĘPNE(n)" "ROZPOCZĘTE(r)" "OCZEKUJE(o)" "WSTRZYMANE(s)" "KIEDYŚ(k)" "|" "ZAKOŃCZONE(z!)" "ANULOWANE(a!)" ))
+(setq org-todo-keywords '((sequence "TODO(t!)" "ROZPOCZĘTE(r)" "|" "ZAKOŃCZONE(z!)" ))
        org-todo-keyword-faces 
        '(
          ("TODO" :foreground "#ff6c85" :weight bold :underline t)
