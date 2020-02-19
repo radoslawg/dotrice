@@ -400,7 +400,7 @@ Pokazuj spacje w trybie programowym
 *** Definicja polskich słów kluczowych
     Zostawiamy =TODO= bo to zbyt często używane słowo kluczowy w org.
 #+BEGIN_SRC emacs-lisp
-(setq org-todo-keywords '((sequence "TODO(t)" "NASTĘPNE(n)" "ROZPOCZĘTE(r)" "OCZEKUJE(o)" "WSTRZYMANE(s)" "KIEDYŚ(k)" "|" "ZAKOŃCZONE(z)" "ANULOWANE(a)" ))
+(setq org-todo-keywords '((sequence "TODO(t!)" "NASTĘPNE(n)" "ROZPOCZĘTE(r)" "OCZEKUJE(o)" "WSTRZYMANE(s)" "KIEDYŚ(k)" "|" "ZAKOŃCZONE(z!)" "ANULOWANE(a!)" ))
        org-todo-keyword-faces 
        '(
          ("TODO" :foreground "#ff6c85" :weight bold :underline t)
@@ -456,7 +456,7 @@ Pokazuj spacje w trybie programowym
         '(
      ;; TODO     (t) Todo template
      ("t" "ToDo" entry (file "refile.org")
-      "* TODO %? %U
+      "* TODO %?
     :LOGBOOK:
     - State \"TODO\"       from \"\"           %U
     :END:" :empty-lines 1)
@@ -465,11 +465,7 @@ Pokazuj spacje w trybie programowym
      ("r" "RPG" entry (file "refile.org")
       "* %? %U :rpg:" :empty-lines 1)
      ("j" "Journal" entry (file+datetree "journal.org")
-      "* %?
-  :PROPERTIES:
-  :CREATED: %U
-  :END:
-  " :empty-lines 1)
+      "* %? %U" :empty-lines 1)
      )
         )
 #+END_SRC
@@ -479,6 +475,8 @@ Pokazuj spacje w trybie programowym
                                    )))
   (setq org-outline-path-complete-in-steps nil)
   (setq org-refile-use-outline-path t)
+  (setq org-log-refile 'time)
+
 #+END_SRC
 
 *** Agenda
