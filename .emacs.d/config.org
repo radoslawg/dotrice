@@ -1065,6 +1065,8 @@ W trybach programistycznych numeruje linie.
   (global-set-key [remap kill-line] 'radekg-kill-line)
   (global-set-key (kbd "C-M-k") 'radekg-join-line) 
   (global-set-key [remap kill-buffer] 'kill-curr-buffer)
+  (global-set-key (kbd "C-c >") '(lambda()(interactive)(insert "➡")))
+  (global-set-key (kbd "C-c <") '(lambda()(interactive)(insert "⬅")))
  #+END_SRC 
 *** Tryb org
 **** Mapowanie klawiszy (lokalne)
