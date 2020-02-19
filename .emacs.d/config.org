@@ -498,6 +498,20 @@ Pokazuj spacje w trybie programowym
 #+BEGIN_SRC emacs-lisp
   (setq org-agenda-skip-scheduled-if-done t)
 #+END_SRC
+*** Podpakiet =org-reverse-datetree=
+Pozwwala obsługiwać odwrócone drzewo dat
+Przydatna komenda =C-@= przeskakuje do liścia z obecnego dnia lub tworzy nowe. Tylko w trybie =org=
+#+BEGIN_SRC emacs-lisp
+  (use-package org-reverse-datetree
+    :ensure t
+    :bind
+    (:map org-mode-map
+          ("C-@" . (lambda()(interactive)(org-reverse-datetree-goto-date-in-file))
+          )
+          )
+    )
+#+END_SRC
+
 ** Pakiet =ivy=
 Zamiast pakietu =helm= - uzupełnianie komend
 #+BEGIN_SRC emacs-lisp
