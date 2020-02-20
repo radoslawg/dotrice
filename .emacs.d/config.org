@@ -506,7 +506,7 @@ Przydatna komenda =C-@= przeskakuje do liścia z obecnego dnia lub tworzy nowe. 
     :ensure t
     :bind
     (:map org-mode-map
-          ("C-@" . (lambda()(interactive)(org-reverse-datetree-goto-date-in-file))
+          ("C-@" . (lambda()(interactive)(org-reverse-datetree-goto-date-in-file)(org-show-context)(org-show-children)(org-show-siblings))
           )
           )
     )
