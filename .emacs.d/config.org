@@ -69,16 +69,12 @@ Uruchom serwer =Emacsa=. Domyślną stroną ma być =*dashboard*=.
 #+END_SRC
 ** Ustawienia językowe
 #+BEGIN_SRC emacs-lisp
-  (setq-default buffer-file-coding-system 'utf-8)
-  (setq coding-system-for-read 'utf-8)
-  (setq coding-system-for-write 'utf-8)
-  (setq default-buffer-file-coding-system 'utf-8)
-  (set-language-environment 'utf-8)
-  (set-default-coding-systems 'utf-8)
-  (prefer-coding-system 'utf-8)
-  (set-selection-coding-system 'utf-8)
-  (set-terminal-coding-system 'utf-8)
-  (set-keyboard-coding-system 'utf-8)
+    (setq-default buffer-file-coding-system 'utf-8-auto)
+    (setq buffer-file-coding-system 'utf-8-auto)
+    (setq default-buffer-file-coding-system 'utf-8-auto)
+    (set-language-environment 'polish)
+    (set-default-coding-systems 'utf-8-auto)
+    (prefer-coding-system 'utf-8-auto)
 #+END_SRC
 ** Wyłączenie kontrolek UI
 #+BEGIN_SRC emacs-lisp
