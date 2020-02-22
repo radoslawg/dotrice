@@ -396,16 +396,16 @@ Pokazuj spacje w trybie programowym
 *** Definicja polskich słów kluczowych
     Zostawiamy =TODO= bo to zbyt często używane słowo kluczowy w org.
 #+BEGIN_SRC emacs-lisp
-(setq org-todo-keywords '((sequence "TODO(t!)" "ROZPOCZĘTE(r)" "|" "ZAKOŃCZONE(z!)" ))
+(setq org-todo-keywords '((sequence "TODO(t!)" ":eyes: ROZPOCZĘTE(r)" "|" ":checkered_flag: ZAKOŃCZONE(z!)" ))
        org-todo-keyword-faces 
        '(
          ("TODO" :foreground "#ff6c85" :weight bold :underline t)
          ("NASTĘPNE" :foreground "#5f5efe" :weight normal :underline t)
-         ("ROZPOCZĘTE" :foreground "#0098dd" :weight bold :underline t)
+         (":eyes: ROZPOCZĘTE" :foreground "#0098dd" :weight bold :underline t)
          ("OCZEKUJE" :foreground "#9f7efe" :weight normal :underline t)
          ("WSTRZYMANE" :foreground "#707070" :weight normal :underline t)
          ("KIEDYŚ" :foreground "#80A080" :weight normal :underline t)
-         ("ZAKOŃCZONE" :foreground "#60c15f" :weight normal :underline t)
+         (":checkered_flag: ZAKOŃCZONE" :foreground "#60c15f" :weight normal :underline t)
          ("ANULOWANE" :foreground "#40913f" :weight normal :underline t))
 )
 #+END_SRC
