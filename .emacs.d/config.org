@@ -341,14 +341,24 @@ linii, i przesuwa kursor do nowej linii.
   (setq-default fill-column '100)
 #+END_SRC
 ** Emoji
+Konfiguracja klawiszy dla emoji powinna znaleźć się w poniżej.
+=C-. prawo= - strzałka w prawo➡
+=C-. lewo= - strzałka w lewo⬅
+=C-. góra= - strzałka w górę⬆
+=C-. dół= - strzałka w dół⬇
 #+BEGIN_SRC emacs-lisp
   (use-package emojify
     :config (setq emojify-display-style 'image)
             (setq emojify-emoji-set "twemoji-v2-22")
     :init (global-emojify-mode 1)
     :bind ("C-. ." . emojify-insert-emoji)
+
     :ensure t
     )
+  (global-set-key (kbd "C-. <right>") '(lambda()(interactive)(insert "➡")))
+  (global-set-key (kbd "C-. <left>") '(lambda()(interactive)(insert "⬅")))
+  (global-set-key (kbd "C-. <up>") '(lambda()(interactive)(insert "⬆")))
+  (global-set-key (kbd "C-. <down>") '(lambda()(interactive)(insert "⬇")))
 #+END_SRC
 ** Whitespace
 Pokazuj spacje w trybie programowym
@@ -1073,8 +1083,6 @@ W trybach programistycznych numeruje linie.
   (global-set-key [remap kill-line] 'radekg-kill-line)
   (global-set-key (kbd "C-M-k") 'radekg-join-line) 
   (global-set-key [remap kill-buffer] 'kill-curr-buffer)
-  (global-set-key (kbd "C-. >") '(lambda()(interactive)(insert "➡")))
-  (global-set-key (kbd "C-. <") '(lambda()(interactive)(insert "⬅")))
  #+END_SRC 
 *** Tryb org
 **** Mapowanie klawiszy (lokalne)
