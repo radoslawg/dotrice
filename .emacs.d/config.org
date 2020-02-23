@@ -759,7 +759,7 @@ w tym miejscu sprawdzić:
   Files\Git\mingw64\libexec\git-core\git-askpass.exe=. 
 
 #+BEGIN_SRC emacs-lisp
-  (setenv "GIT_ASKPASS" "git-gui--askpass")
+;;  (setenv "GIT_ASKPASS" "git-gui--askpass")
 #+END_SRC
 ** Pakiet =avy=
    =M-s= wpisujesz pierwsze litery słowa i przeskakuje lub daje wybór jeśli znalazł więcej
