@@ -494,11 +494,11 @@ i przypisać skrót (np Ctrl+Alt+F6)
 *** Refile
 #+BEGIN_SRC emacs-lisp
   (setq org-refile-targets (quote (("organizator.org" :maxlevel . 3)
+                                   ("notatki.org" :maxlevel . 2)
                                    )))
   (setq org-outline-path-complete-in-steps nil)
   (setq org-refile-use-outline-path t)
   (setq org-log-refile 'time)
-
 #+END_SRC
 
 *** Agenda
@@ -1093,6 +1093,7 @@ W trybach programistycznych numeruje linie.
   (global-set-key (kbd "C-c c e") 'config-visit)
   (global-set-key (kbd "C-c c r") 'config-reload)
   (global-set-key (kbd "C-c c o") '(lambda()(interactive)(find-file "~/MojePliki/org/organizator.org")))
+  (global-set-key (kbd "C-c c n") '(lambda()(interactive)(find-file "~/MojePliki/org/notatki.org")))
   (global-set-key (kbd "C-c c w") '(lambda()(interactive)(find-file "~/MojePliki/org/refile.org")))
   (global-set-key (kbd "C-c c j") '(lambda()(interactive)(find-file "~/MojePliki/org/journal.org")))
   (global-set-key (kbd "C-S-r") 'revert-buffer)
