@@ -1015,7 +1015,13 @@ https://github.com/magnars/multiple-cursors.el
   (use-package iedit
     :ensure t)
 #+END_SRC
-
+** Pakiet =autohotkey=
+Pakiet do trybu AutoHotkey, który ma składnię plików o rozszerzeniu =.ahk=
+#+BEGIN_SRC emacs-lisp
+  (use-package ahk-mode
+    :ensure t
+    )
+#+END_SRC
 * Programowanie
 ** Numerowanie linii - od Emacs 26
 W trybach programistycznych numeruje linie.
