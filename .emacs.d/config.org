@@ -387,6 +387,22 @@ Pokazuj spacje w trybie programowym
   (use-package org
     :ensure t)
 #+END_SRC
+*** Bufor capture z dowolnego miejsca
+Należy stworzyć skrót z poleceniem
+#+BEGIN_SRC shell
+emacsclientw -n -e "(rg/org-capture)"
+#+END_SRC
+i przypisać skrót (np Ctrl+Alt+F6)
+
+#+BEGIN_SRC emacs-lisp
+  (defun rg/org-capture ()
+    (interactive)
+    (raise-frame)
+    (select-frame-set-input-focus (selected-frame))
+    (org-capture)
+    )
+#+END_SRC
+
 *** Logowanie
 #+BEGIN_SRC emacs-lisp
   (setq org-log-into-drawer t)
