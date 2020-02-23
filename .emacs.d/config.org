@@ -742,11 +742,7 @@ Podpowiadacz tekstu w Emacs
     :ensure t)
 #+END_SRC
 ** Pakiet =magit=
-   Pakiet do obsługi =git= w emacs
-#+BEGIN_SRC emacs-lisp
-  (use-package magit
-    :ensure t)
-#+END_SRC
+Pakiet do obsługi =git= w emacs
 Aby prośby o hasło działały pod *Windows* musimy skonfigurować gita by używał GUI do zapytań. Warto
 w tym miejscu sprawdzić:
 - Konfigurację *Git* do zapamiętywania haseł poleceniem =git config --global credential.helper manager=
@@ -757,9 +753,9 @@ w tym miejscu sprawdzić:
 - Oraz *Emacs* musi komunikować się przez popupy, więc git musi prosić o hasło do klucza poprzez
   ui. W tym celu należy (najlepiej) ustawić zmienną systemową np. =set SSH_ASKPASS=c:\Program
   Files\Git\mingw64\libexec\git-core\git-askpass.exe=. 
-
 #+BEGIN_SRC emacs-lisp
-;;  (setenv "GIT_ASKPASS" "git-gui--askpass")
+  (use-package magit
+    :ensure t)
 #+END_SRC
 ** Pakiet =avy=
    =M-s= wpisujesz pierwsze litery słowa i przeskakuje lub daje wybór jeśli znalazł więcej
