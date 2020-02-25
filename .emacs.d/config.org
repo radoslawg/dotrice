@@ -299,13 +299,16 @@ linii, i przesuwa kursor do nowej linii.
 #+BEGIN_SRC emacs-lisp
       ;; (use-package zenburn-theme
       ;;   :ensure t)
-  (use-package monokai-theme
-    :ensure t
-    :init
-    (load-theme 'monokai t nil)
-    )
+  ;;(use-package monokai-theme
+  ;;  :ensure t
+  ;;  :init
+  ;;  (load-theme 'monokai t nil)
+  ;;  )
   ;; (use-package material-theme
     ;; :ensure t)
+  (use-package gruber-darker-theme
+    :ensure t
+    )
 #+END_SRC
 ** Przeźroczystość
 #+BEGIN_SRC emacs-lisp
