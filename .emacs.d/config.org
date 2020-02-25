@@ -488,6 +488,12 @@ i przypisać skrót (np Ctrl+Alt+F6)
       "* %? %U :rpg:" :empty-lines 1)
      ("j" "Journal" entry (file+datetree "journal.org")
       "* %? %U" :empty-lines 1)
+     ("l" "Cliplink" entry (file "refile.org")
+      "* TODO %(org-cliplink-capture)
+    :LOGBOOK:
+    - State \"TODO\"       from \"\"           %U
+    :END:
+    %?" :empty-lines 1)
      )
         )
 #+END_SRC
@@ -531,6 +537,15 @@ Przydatna komenda =C-@= przeskakuje do liścia z obecnego dnia lub tworzy nowe. 
           ("C-@" . (lambda()(interactive)(org-reverse-datetree-goto-date-in-file)(org-show-context)(org-show-children)(org-show-siblings))
           )
           )
+    )
+#+END_SRC
+*** Podpakiet =org-cliplink=
+Wstawia link do strony ze schowka, łącząc sie z nią i pobierając nazwę.
+Przypisane do skrótu =C-c c l=
+#+BEGIN_SRC emacs-lisp
+  (use-package org-cliplink
+    :ensure t
+    :bind ("C-c c l" . org-cliplink)
     )
 #+END_SRC
 
