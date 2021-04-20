@@ -1,4 +1,22 @@
 ## -*- coding: utf-8;mode: org;  -*-
+#+TITLE Moja konfiguracja
+#+PROPERTY: header-args:emacs-lisp :tangle ~/.emacs.d/config.el
+
+* Uruchamianie
+#+begin_src emacs-lisp
+;; The default is 800 kilobytes.  Measured in bytes.
+(setq gc-cons-threshold (* 100 1000 1000))
+
+(defun rg/display-startup-time ()
+  (message "Emacs loaded in %s with %d garbage collections."
+           (format "%.2f seconds"
+                   (float-time
+                     (time-subtract after-init-time before-init-time)))
+           gcs-done))
+
+(add-hook 'emacs-startup-hook #'rg/display-startup-time)
+#+end_src
+
 * Konfiguracja systemu operacyjnego
 - Należy zainstalować czcionkę Iosevka
 - Należy zainstalować czcionkę All-the-icons
@@ -10,28 +28,46 @@
 - Dla pythona =WORKON_HOME= ustawione na =c:\home\MojePliki\Python=
 - =Total Commander= edytor powinien zostać ustawiony na =C:\emacs\bin\emacsclientw.exe "%1"=
 * Podstawowe funkcje menadżera pakietów
+** Pakiety i repozytoria
+#+begin_src emacs-lisp
+  (require 'package)
+  (setq package-enable-at-startup nil)
+  (setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                           ("org" . "http://orgmode.org/elpa/")
+                           ("gnu" . "https://elpa.gnu.org/packages/")))
+  (package-initialize)
+#+end_src
 ** Pakiet =use=
 #+BEGIN_SRC emacs-lisp
-  (unless (package-installed-p 'use-package)
-    (package-refresh-contents)
-    (package-install 'use-package))
-#+END_SRC
-** Pakiet =try=
-#+BEGIN_SRC emacs-lisp
-  (use-package try
-    :ensure t)
+    (unless (package-installed-p 'use-package)
+      (package-refresh-contents)
+      (package-install 'use-package))
+    (setq use-package-always-ensure t)
+;;    (setq use-package-verbose t)
 #+END_SRC
 ** Pakiet =auto-package-update=
 #+BEGIN_SRC emacs-lisp
   (use-package auto-package-update
     :ensure t
+    :custom
+    (auto-package-update-interval 7)
+    (auto-package-update-delete-old-versions t)
+    (auto-package-update-hide-results t)
     :config
-    (setq auto-package-update-interval 14)
-    (setq auto-package-update-delete-old-versions t)
     (auto-package-update-maybe)
     )
 #+END_SRC
+** Pakiet =try=
+#+BEGIN_SRC emacs-lisp
+  (use-package try
+    :commands try)
+#+END_SRC
 * Podstawowe ustawienia Emacs'a
+** Visible bell
+Włączamy =visible bell=. W innym przypadku Windows będzie grał wkurzający dźwięk przy różnych okazjach
+#+BEGIN_SRC emacs-lisp
+  (setq visible-bell t)
+#+END_SRC
 ** Jak działa edycja
 Kasowanie znaku klawiszem "DELETE" nie powinno usuwać całego zaznaczenia. I tak używam =C-w= do tego.
 #+BEGIN_SRC emacs-lisp
@@ -51,21 +87,21 @@ Kasowanie znaku klawiszem "DELETE" nie powinno usuwać całego zaznaczenia. I ta
   (setq w32-apps-modifier 'hyper) ; Menu/App key
 #+END_SRC
 ** Serwer Emacsa
-Uruchom serwer =Emacsa=. Domyślną stroną ma być =*dashboard*=.
+Uruchom serwer =Emacsa=. Domyślną stroną ma być =*scratch*=.
 =C-x C-c= powinno zamykać ramkę zamiast emacsa?
 #+BEGIN_SRC emacs-lisp
-  (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
-  (server-force-delete)
-(require 'server)
-(unless (server-running-p)
-  (cond
-   ((eq system-type 'windows-nt)
-    (setq server-auth-dir "~\\.emacs.d\\server\\"))
-   ((eq system-type 'gnu/linux)
-    (setq server-auth-dir "~/.emacs.d/server/")))
-  (setq server-name "emacs-server-file")
-  (server-start))
-  (global-set-key (kbd "C-x C-c") 'save-buffers-kill-emacs)
+   (setq initial-buffer-choice (lambda () (get-buffer-create "*scratch*")))
+    (server-force-delete)
+  (require 'server)
+  (unless (server-running-p)
+    (cond
+     ((eq system-type 'windows-nt)
+      (setq server-auth-dir "~\\.emacs.d\\server\\"))
+     ((eq system-type 'gnu/linux)
+      (setq server-auth-dir "~/.emacs.d/server/")))
+    (setq server-name "emacs-server-file")
+    (server-start))
+    (global-set-key (kbd "C-x C-c") 'save-buffers-kill-emacs)
 #+END_SRC
 ** Ustawienia językowe
 #+BEGIN_SRC emacs-lisp
@@ -103,6 +139,16 @@ Uruchom serwer =Emacsa=. Domyślną stroną ma być =*dashboard*=.
  #+END_SRC
 ** Konfiguracja =dired=
  Wbudowany eksplorator plików dired. Wywołanie =C-x C-f= i wskazanie katalogu.
+ #+begin_src emacs-lisp
+   (use-package dired
+     :ensure nil
+     :commands (dired dired-jump)
+     :bind (("C-x C-j" . dired-jump))
+     :custom ((dired-listing-switches "-aghol --group-directories-first")
+              (ls-lisp-use-insert-directory-program nil)
+              (ls-lisp-dirs-first t))
+     )
+ #+end_src
 *** Używanie =dired= jak Norton Commandera
  #+BEGIN_SRC emacs-lisp
  (setq dired-dwim-target t)
@@ -112,6 +158,23 @@ Uruchom serwer =Emacsa=. Domyślną stroną ma być =*dashboard*=.
   (add-to-list 'load-path "~/.emacs.d/lisp/dired+")
   (require 'dired+)
 #+END_SRC
+*** =dired-single= zmusza =dired= do używania tylko jednego okna (ale coś nie bardzo)
+#+begin_src emacs-lisp
+  (use-package dired-single
+    :after dired
+    :bind (
+    :map dired-mode-map
+    ([remap dired-find-file] . dired-single-buffer)
+    ([remap dired-mouse-find-file-other-window] . dired-single-buffer-mouse)
+    ([remap dired-up-directory] . dired-single-up-directory)
+    )
+  )
+#+end_src
+*** Ikony dla =dired=
+#+begin_src emacs-lisp
+  (use-package all-the-icons-dired
+    :hook (dired-mode . all-the-icons-dired-mode))
+#+end_src
 ** Kopie zapasowe plików
 Przenosi kopie zapasowe do katalogu =~/.emacs-saves/= i zostawia kilka kopii
 #+BEGIN_SRC emacs-lisp
@@ -297,17 +360,25 @@ linii, i przesuwa kursor do nowej linii.
 * Wygląd
 ** Motyw
 #+BEGIN_SRC emacs-lisp
-      ;; (use-package zenburn-theme
-      ;;   :ensure t)
-  ;;(use-package monokai-theme
+  ;; (use-package zenburn-theme
+  ;;   :ensure t
+  ;;   :init
+  ;;   (load-theme 'zenburn t)
+  ;;   )
+  ;; ;;(use-package monokai-theme
   ;;  :ensure t
   ;;  :init
   ;;  (load-theme 'monokai t nil)
   ;;  )
   ;; (use-package material-theme
-    ;; :ensure t)
-  (use-package gruber-darker-theme
-    :ensure t
+  ;; :ensure t)
+  ;;        (use-package gruber-darker-theme
+  ;;          :ensure t
+  ;;          )
+  ;;        (load-theme 'gruber-darker t)
+  ;;(load-theme 'wombat t)
+  (use-package doom-themes
+    :init (load-theme 'doom-snazzy t)
     )
 #+END_SRC
 ** Przeźroczystość
@@ -319,10 +390,12 @@ linii, i przesuwa kursor do nowej linii.
 Źródła czcionki na [[https://github.com/adobe-fonts/source-code-pro][GitHub]]
 #+BEGIN_SRC emacs-lisp
   (set-face-attribute 'default nil
-		      :font "Iosevka"
-		      :weight 'normal
-		      :width 'normal
-		      :height 110)
+                      :font "Iosevka"
+                      :weight 'normal
+                      :width 'normal
+                      :height 115)
+  (set-face-attribute 'variable-pitch nil :font "Cantarell" :height 130 :weight 'regular)
+  (set-face-attribute 'fixed-pitch nil :font "Iosevka" :weight 'normal)
 #+END_SRC
 ** Dodatkowe /upiększenia/
    - Podświetlanie linii
@@ -341,7 +414,7 @@ linii, i przesuwa kursor do nowej linii.
    Kolumna, po której następuje przepełnienie i nowa linia. Całe paragraphy
    można ponownie formatować korzystając z =M-q=.
 #+BEGIN_SRC emacs-lisp
-  (setq-default fill-column '100)
+  (setq-default fill-column '120)
 #+END_SRC
 ** Emoji
 Konfiguracja klawiszy dla emoji powinna znaleźć się w poniżej.
@@ -387,8 +460,8 @@ Pokazuj spacje w trybie programowym
 ** Pakiet =Org=
 *** Instalacja
 #+BEGIN_SRC emacs-lisp
-  (use-package org
-    :ensure t)
+    (use-package org
+    :defer 0)
 #+END_SRC
 *** Bufor capture z dowolnego miejsca
 Należy stworzyć skrót z poleceniem
@@ -413,14 +486,23 @@ i przypisać skrót (np Ctrl+Alt+F6)
 *** Podstawowe ustawienia
 #+BEGIN_SRC emacs-lisp
   (add-hook 'org-mode-hook (lambda()
-                             (auto-fill-mode 1)
                              (org-indent-mode 1)
+                             (variable-pitch-mode 1)
+                             (visual-line-mode 1)
                              ))
+  (setq org-image-actual-width nil)
   (setq org-hide-leading-stars 't)
   (setq org-directory "~/MojePliki/org/")
   (setq org-agenda-skip-unavailable-files t)
   (setq org-agenda-start-on-weekday nil)
   (setq org-tags-column 99)
+  (setq org-ellipsis " ▼") ;; ... na końcu nagłówków na trójkąt
+  (setq org-hide-emphasis-markers t) ;; ukryj znaki formuatujące
+  (font-lock-add-keywords 'org-mode
+                            '(("^ *\\([-]\\) "
+                               (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "\u2022"))))))
+  (require 'org-tempo) ;; potrzebne aby Bloki src wstawiać automatem '<s'
+  (add-to-list 'org-structure-template-alist '("se" . "src emacs-lisp"))
 #+END_SRC
 *** Definicja polskich słów kluczowych
     Zostawiamy =TODO= bo to zbyt często używane słowo kluczowy w org.
@@ -451,10 +533,10 @@ i przypisać skrót (np Ctrl+Alt+F6)
 #+BEGIN_SRC emacs-lisp
   ;;\22B9 \22C2 ? \u233 ? ? \u2234  ?
      (use-package org-bullets
-       :ensure t
+       :hook (org-mode-hook . org-bullets-mode)
        :config
        (setq org-bullets-bullet-list '("\u2836")) ;; eweuntualnie 2894
-       (add-hook 'org-mode-hook (lambda() (org-bullets-mode 1))))
+       )
 #+END_SRC
 *** Enter /wchodzi/ w linki
 #+BEGIN_SRC emacs-lisp
@@ -529,46 +611,105 @@ i przypisać skrót (np Ctrl+Alt+F6)
 #+BEGIN_SRC emacs-lisp
   (setq org-agenda-skip-scheduled-if-done t)
 #+END_SRC
-*** Podpakiet =org-reverse-datetree=
-Pozwwala obsługiwać odwrócone drzewo dat
-Przydatna komenda =C-@= przeskakuje do liścia z obecnego dnia lub tworzy nowe. Tylko w trybie =org=
-#+BEGIN_SRC emacs-lisp
-  (use-package org-reverse-datetree
-    :ensure t
-    :bind
-    (:map org-mode-map
-          ("C-@" . (lambda()(interactive)(org-reverse-datetree-goto-date-in-file)(org-show-context)(org-show-children)(org-show-siblings))
-          )
-          )
-    )
-#+END_SRC
 *** Podpakiet =org-cliplink=
 Wstawia link do strony ze schowka, łącząc sie z nią i pobierając nazwę.
 Przypisane do skrótu =C-c c l=
 #+BEGIN_SRC emacs-lisp
   (use-package org-cliplink
-    :ensure t
+    :commands org-cliplink
     :bind ("C-c c l" . org-cliplink)
     )
 #+END_SRC
 
+*** Wielkości nagłówków zależnie od poziomu zagnieżdżenia
+#+BEGIN_SRC emacs-lisp
+  (dolist (face '((org-level-1 . 1.2)
+                  (org-level-2 . 1.1)
+                  (org-level-3 . 1.05)
+                  (org-level-4 . 1.0)
+                  (org-level-5 . 1.1)
+                  (org-level-6 . 1.1)
+                  (org-level-7 . 1.1)
+                  (org-level-8 . 1.1)
+                  (org-level-6 . 1.1)))
+    (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face)))
+    
+#+END_SRC
+*** Zmienna szerokość czcionek w =org-mode=
+#+BEGIN_SRC emacs-lisp
+  (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-code nil :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-table nil :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-link nil :inherit '(link fixed-pitch))
+  ;;  (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
+  (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
+#+END_SRC
+*** Visual Line Column FIll
+#+BEGIN_SRC emacs-lisp
+    (defun rg/org-mode-visual-fill ()
+      (setq visual-fill-column-width 140
+            visual-fill-column-center-text t)
+      (visual-fill-column-mode 1))
+
+    (use-package visual-fill-column
+      :hook (org-mode . rg/org-mode-visual-fill)
+  )
+#+END_SRC
+** Pakiet =helpful=
+Dodaje wiele informacji do systemu pomocy Emacsa. [[https://github.com/Wilfred/helpful][Repozytorium]]
+#+BEGIN_SRC emacs-lisp
+  (use-package helpful
+    :commands (helpful-callable helpful-variable helpful-command helpful-key)
+    :custom
+    (counsel-describe-function-function #'helpful-callable)
+    (counsel-describe-variable-function #'helpful-variable)
+    :bind
+    ([remap describe-command] . helpful-command)
+    ([remap describe-key] . helpful-key)
+    )
+#+END_SRC
 ** Pakiet =ivy=
 Zamiast pakietu =helm= - uzupełnianie komend
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package ivy
-  ;;   :ensure t
-  ;;   :config
-  ;;   (ivy-mode 1)
-  ;;   (setq ivy-use-virtual-buffers t)
-  ;;   (setq ivy-count-format "(%d/%d) ")
-  ;;   )
+  (use-package ivy
+     :diminish
+     :config
+     (ivy-mode 1)
+     (setq ivy-use-virtual-buffers t)
+     (setq ivy-count-format "(%d/%d) ")
+     )
+#+END_SRC
+** Pakiet =all-the-icons-rich=
+Pokazuje ikonki dla ivy-rich. [[https://github.com/seagle0128/all-the-icons-ivy-rich][Repozytorium]]
+#+BEGIN_SRC emacs-lisp
+  (use-package all-the-icons-ivy-rich
+    :after ivy-rich
+    :init (all-the-icons-ivy-rich-mode 1))
+#+END_SRC
+** Pakiet =ivy-rich=
+Pokazuje więcej informacji na temat wybranych komend. Więcej informajci w [[https://github.com/Yevgnen/ivy-rich][Repozytorium]]
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy-rich
+    :after ivy
+    :init (ivy-rich-mode 1)
+    )
+#+END_SRC
+** Pakiet =all-the-icons-ivy=
+Dodaje ikony plików do buforów ivy. [[https://github.com/asok/all-the-icons-ivy][Repozytorium]]
+#+BEGIN_SRC emacs-lisp
+  (use-package all-the-icons-ivy
+    :after ivy
+    :init (add-hook 'after-init-hook 'all-the-icons-ivy-setup))
 #+END_SRC
 ** Pakiet =posframe= i inne
 Pokazuje okno zamiast mieszać w statusie
 #+BEGIN_SRC emacs-lisp
-  (use-package posframe
-    :ensure t
-    )
+  ;; (use-package posframe
+  ;;   :ensure t
+  ;;   )
 
   ;; (use-package helm-posframe
   ;;   :ensure t
@@ -596,55 +737,59 @@ Pokazuje okno zamiast mieszać w statusie
 Rozszerza możliwości ivy?
 #+BEGIN_SRC emacs-lisp
   (use-package counsel
-    :ensure t
+    :after ivy
     :bind (
+    ([remap describe-function] . counsel-describe-function)
+    ([remap describe-variable] . counsel-describe-variable)
     ("M-x" . counsel-M-x)
     ("M-y" . counsel-yank-pop)
     ("C-x C-f" . counsel-find-file)
-    ("C-h f" . counsel-describe-function)
-    ("C-h v" . counsel-describe-variable)
     ("C-h l" . counsel-find-library)
     ("C-h S" . counsel-info-lookup-symbol)
+    ("C-x b" . counsel-switch-buffer)
+    ("C-x C-b" . counsel-switch-buffer-other-window)
     ("<f2> u" . counsel-unicode-char)
     :map ivy-minibuffer-map
     ("M-y" . ivy-next-line)
+    :map minibuffer-local-map
+    ("C-r" . 'counsel-minibuffer-history)
     )
   )
 #+END_SRC
 ** Pakiet =Helm=
 #+BEGIN_SRC emacs-lisp
-    (use-package helm
-      :ensure t
-      :init (helm-mode 1)
-      :config
-      (setq helm-boring-buffer-regexp-list (list (rx "*magit-") (rx "*helm")))
-      :bind
-      ("M-x" . helm-M-x)
-      ("C-x C-b" . helm-buffers-list)
-      ("C-x C-f" . helm-find-files)
-      ("C-x r b" . helm-bookmarks)
-  )
+  ;;   (use-package helm
+  ;;     :ensure t
+  ;;     :init (helm-mode 1)
+  ;;     :config
+  ;;     (setq helm-boring-buffer-regexp-list (list (rx "*magit-") (rx "*helm")))
+  ;;     :bind
+  ;;     ("M-x" . helm-M-x)
+  ;;     ("C-x C-b" . helm-buffers-list)
+  ;;     ("C-x C-f" . helm-find-files)
+  ;;     ("C-x r b" . helm-bookmarks)
+  ;; )
 #+END_SRC
 *** =TAB= powinien uzupełniać wpisy, a nie pokazywać pomoc
 #+BEGIN_SRC emacs-lisp
-(define-key helm-find-files-map "\t" 'helm-execute-persistent-action)
+;; (define-key helm-find-files-map "\t" 'helm-execute-persistent-action)
 #+END_SRC
 ** Pakiet =Which-key=
 #+BEGIN_SRC emacs-lisp
   (use-package which-key
-    :ensure t
-    :init
-    (which-key-mode))
+    :defer 0
+    :config
+    (which-key-mode)
+    (setq which-key-idle-delay 0.3)
+    )
 #+END_SRC
 ** Pakiet =company=
 Podpowiadacz tekstu w Emacs
 [[http://company-mode.github.io/][Link do githuba]]
 #+BEGIN_SRC emacs-lisp
    (use-package company
-     :ensure t
      :diminish (company-mode . " @")
-     :hook
-     (after-init . global-company-mode)
+     :hook (after-init . global-company-mode)
      :config
      (add-to-list 'company-backends 'company-omnisharp)
      (add-to-list 'company-backends 'company-jedi)
@@ -658,7 +803,7 @@ Podpowiadacz tekstu w Emacs
      )
 
   (use-package company-quickhelp
-     :ensure t
+     :after company
      :init (with-eval-after-load 'company
              (company-quickhelp-mode)))
 
@@ -669,15 +814,15 @@ Podpowiadacz tekstu w Emacs
    =~/.emacs.d/snippets/<nazwa_trybu>=. Więcej informacji na stronie
    [[http://joaotavora.github.io/yasnippet/snippet-development.html][Jak pisać snippety]].
 #+BEGIN_SRC emacs-lisp
-  (use-package yasnippet
-    :ensure t 
+    (use-package yasnippet
     :config
-    (yas-global-mode 1))
+     (yas-global-mode 1)
+      )
 #+END_SRC
 *** Pakiet =Yasnippet Snippets=
 #+BEGIN_SRC emacs-lisp
   (use-package yasnippet-snippets
-    :ensure t
+  :after yasnippet
     )
 #+END_SRC
 *** Integracja z =Company=
@@ -709,7 +854,6 @@ Podpowiadacz tekstu w Emacs
    Przy przełączaniu okien pomaga znaleźć kursor.
 #+BEGIN_SRC emacs-lisp
   (use-package beacon
-    :ensure t
     :config
     (beacon-mode 1)
     )
@@ -717,20 +861,19 @@ Podpowiadacz tekstu w Emacs
 ** Pakiet =Ace Window=
 #+BEGIN_SRC emacs-lisp
   (use-package ace-window
-    :ensure t
+    :commands ace-window
     :init
     (progn
       (global-set-key [remap other-window] 'ace-window)
       (custom-set-faces
        '(aw-leading-char-face
 	 ((t (:inherit ace-jump-face-foreground :height 3.0)))))
-      )		  
+      )
     )
 #+END_SRC
 ** Pakiet =Swiper=
 #+BEGIN_SRC emacs-lisp
   (use-package swiper
-    :ensure t
     :bind
     ("C-s" . swiper)
     )
@@ -740,7 +883,6 @@ Podpowiadacz tekstu w Emacs
 *** Instalacja
 #+BEGIN_SRC emacs-lisp
   (use-package undo-tree
-    :ensure t
     :init
     (global-undo-tree-mode))
 #+END_SRC
@@ -757,7 +899,8 @@ Podpowiadacz tekstu w Emacs
 *** Instalacja
 #+BEGIN_SRC emacs-lisp
   (use-package powershell
-    :ensure t)
+    :mode (("\\.ps1\\'" . powershell-mode))
+    )
 #+END_SRC
 ** Pakiet =magit=
 Pakiet do obsługi =git= w emacs
@@ -773,7 +916,7 @@ w tym miejscu sprawdzić:
   Files\Git\mingw64\libexec\git-core\git-askpass.exe=. 
 #+BEGIN_SRC emacs-lisp
   (use-package magit
-    :ensure t)
+    :commands magit-status)
 #+END_SRC
 ** Pakiet =avy=
    =M-s= wpisujesz pierwsze litery słowa i przeskakuje lub daje wybór jeśli znalazł więcej
@@ -781,7 +924,7 @@ w tym miejscu sprawdzić:
    =M-l= Daje wybór linii
 #+BEGIN_SRC emacs-lisp
   (use-package avy
-    :ensure t
+    :commands (avy-goto-char-timer avy-goto-line avy-goto-char)
     :bind ("M-s" . avy-goto-char-timer)
     ("M-l" . avy-goto-line)
     ("M-S" . avy-goto-char))
@@ -798,7 +941,7 @@ w tym miejscu sprawdzić:
    Ekwiwalent vimowego =*= oraz =#= + podświetlanie symbolu
 #+BEGIN_SRC emacs-lisp
   (use-package highlight-symbol
-    :ensure t
+    :commands (highlight-symbol highlight-symbol-next highlight-symbol-prev highlight-symbol-query-replace)
     :init
     (highlight-symbol-mode 1)
     :bind ([C-f3] . highlight-symbol)
@@ -806,22 +949,6 @@ w tym miejscu sprawdzić:
     ("C-#" . highlight-symbol-prev)
     ("C-M-*" . highlight-symbol-query-replace)
     )
-#+END_SRC
-** Pakiet =dashboard=
-#+BEGIN_SRC emacs-lisp
-  (use-package dashboard
-    :ensure t
-    :config
-    (dashboard-setup-startup-hook)
-    (setq dasboard-items '((recents . 10)))
-    (setq dashboard-center-content t)
-    (setq dasboard-banner-logo-title "Cześć!")
-    (setq dashboard-set-heading-icons t)
-    (setq dashboard-set-file-icons t)
-    (setq dashboard-set-navigator t)
-    (setq dashboard-set-init-info t)
-    (add-to-list 'dashboard-items '(agenda) t)
-    (setq show-week-agenda-p t))
 #+END_SRC
 ** Pakiet =autocomplete=
 Dopełnianie tekstu
@@ -848,27 +975,6 @@ Ukrywa minor mode'y w statusie.
     (diminish 'auto-fill-mode)
     )
 #+END_SRC
-** Pakiet =dmenu=
-#+BEGIN_SRC emacs-lisp
-  (use-package dmenu
-    :ensure t
-    :bind
-    ("s-SPC" . 'dmenu))
-#+END_SRC
-** Pakiet =symon=
-#+BEGIN_SRC emacs-lisp
-  (use-package symon
-    :ensure t
-    :bind
-    ("s-h" . symon-mode))
-#+END_SRC
-** Pakiet =hungry-delete=
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package hungry-delete
-  ;;   :ensure t
-  ;;   :config
-  ;;   (global-hungry-delete-mode))
-#+END_SRC
 ** Pakiet =expand-region=
 #+BEGIN_SRC emacs-lisp
   (use-package expand-region
@@ -880,7 +986,7 @@ Ukrywa minor mode'y w statusie.
 Drzewo katalogów. Włączanie/Wyłączanie za pomocą klawisza =F8=
 #+BEGIN_SRC emacs-lisp
   (use-package neotree
-    :ensure t
+    :commands neotree-toggle
     :config
     (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
     (setq neo-smart-open t)
@@ -915,7 +1021,7 @@ Nyan mode pokazuje pozycję w pliku przy pomocy... Nyan cat'a ;)
 ** Pakiet =omnisharp=
 #+BEGIN_SRC emacs-lisp
     (use-package omnisharp
-      :ensure t
+      :after csharp-mode
       :init
       (add-hook 'csharp-mode-hook 'omnisharp-mode)
       (add-hook 'csharp-mode-hook 'company-mode)
@@ -930,23 +1036,13 @@ Nyan mode pokazuje pozycję w pliku przy pomocy... Nyan cat'a ;)
    Do obsługi strasznego języka =C#=
 #+BEGIN_SRC emacs-lisp
   (use-package csharp-mode
-    :ensure t)
-#+END_SRC
-** Pakiet =spaceline=
-Ładny status bar w emacsie
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package spaceline
-  ;;   :ensure t
-  ;;   :config
-  ;;   (require 'spaceline-config)
-  ;;   (setq powerline-default-separator (quote arrow))
-  ;;   (spaceline-spacemacs-theme))
+    :mode (("\\.cs\\'" . sharp-mode))
+    )
 #+END_SRC
 ** Pakiet =multiple-cursors=
 https://github.com/magnars/multiple-cursors.el
 #+BEGIN_SRC emacs-lisp
     (use-package multiple-cursors
-      :ensure t
       :bind
       ("C-S-c C-S-c" . 'mc/edit-lines)
       ("C->" . 'mc/mark-next-like-this)
@@ -960,9 +1056,8 @@ https://github.com/magnars/multiple-cursors.el
 ** Pakiet =rainbow-delimeters=
 #+BEGIN_SRC emacs-lisp
   (use-package rainbow-delimiters
-    :ensure t
-    :config
-    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+    :commands rainbow-delimiters-mode
+    :hook (prog-mode . rainbow-delimiters-mode)
   )
 #+END_SRC
 
@@ -970,14 +1065,11 @@ https://github.com/magnars/multiple-cursors.el
 #+BEGIN_SRC emacs-lisp
   (use-package all-the-icons
     :ensure t)
-  (use-package minions
-    :ensure t
-    :config (minions-mode 1))
 
   (use-package doom-modeline
-    :ensure t
-    :hook (after-init . doom-modeline-mode)
+    :init (doom-modeline-mode 1)
     :config
+    (setq doom-modeline-height 30)
     (setq doom-modeline-major-mode-color-icon t)
 
     ;; How wide the mode-line bar should be. It's only respected in GUI.
@@ -1028,7 +1120,7 @@ https://github.com/magnars/multiple-cursors.el
 ** Pakiet =flymake=
 #+BEGIN_SRC emacs-lisp
   (use-package flymake
-    :ensure t)
+    :hook (prog-mode . flymake-mode))
 #+END_SRC
 ** Pakiet =iedit=
 #+BEGIN_SRC emacs-lisp
@@ -1039,14 +1131,12 @@ https://github.com/magnars/multiple-cursors.el
 Pakiet do trybu AutoHotkey, który ma składnię plików o rozszerzeniu =.ahk=
 #+BEGIN_SRC emacs-lisp
   (use-package ahk-mode
-    :ensure t
+  :mode (("\\.ahk\\'" . ahk-mode))
     )
 #+END_SRC
 ** Pakiet =markdown=
 #+BEGIN_SRC emacs-lisp
 (use-package markdown-mode
-  :ensure t
-  :commands (markdown-mode gfm-mode)
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
@@ -1069,21 +1159,20 @@ W trybach programistycznych numeruje linie.
    Pakiet uzupełniający dla =Python=.
 #+BEGIN_SRC emacs-lisp
   (use-package jedi
-    :ensure t
-    :init
-    (add-hook 'python-mode-hook 'jedi:setup)
-    (add-hook 'python-mode-hook 'jedi:ac-setup))
+    :hook (python-mode-hook . jedi:setup)
+    (python-mode-hook . jedi:ac-setup)
+)
 
   (use-package company-jedi
-    :ensure t)
+    :after (jedi company))
 #+END_SRC
 ** Pakiet =elpy=
 #+BEGIN_SRC emacs-lisp
   (use-package elpy
-    :ensure t
-    :config
-    (setq python-indent-offset 4)
-    (elpy-enable))
+    :hook (python-mode-hook . elpy-enable)
+    :custom
+    (python-indent-offset 4)
+)
 #+END_SRC
 ** WYŁĄCZONY Pakiet =pyvenv=
 #+BEGIN_SRC emacs-lisp
@@ -1096,16 +1185,12 @@ W trybach programistycznych numeruje linie.
 ** Formatowanie i lint dla =python=
 #+BEGIN_SRC emacs-lisp
   (use-package py-autopep8
-    :ensure t
-    :config
-    (add-hook 'elpy-mode-hook #'py-autopep8-enable-on-save))
-
-  (use-package blacken
-    :ensure t)
+    :hook (elpy-mode-hook . 'py-autopep8-enable-on-save)
+)
 #+END_SRC
 ** Konfiguracja =flymake= dla python
 #+BEGIN_SRC emacs-lisp
-  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+;;  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
   (add-hook 'elpy-mode-hook 'flycheck-mode)
 #+END_SRC
 * Mapowanie klawiszy
@@ -1150,37 +1235,6 @@ W trybach programistycznych numeruje linie.
    (global-set-key "\C-ca" 'org-agenda)
    (global-set-key (kbd "<f6>") 'org-capture)
  #+END_SRC
-* Modeline
-Proste metody (formatowanie do bani), które pobierają z windows informacje o pamięci oraz obciążeniu
-procesora. Co ciekawe trwa to dość długo. Zupeł nie używalne pod =Windows=. Spróbuję z wersją =Linuksową=.
-
-#+BEGIN_SRC emacs-lisp
-  (defun get-free-memory ()
-      (format "%0.2f"
-	      (/
-	       (string-to-number
-		(shell-command-to-string "wmic OS get FreePhysicalMemory /Value | grep Free | cut -d '=' -f 2"))
-	       1024.0
-	       )
-	      )
-      )
-
-  (defun get-cpu-load ()
-    (shell-command-to-string "wmic cpu get loadpercentage /Value | grep Load | cut -d '=' -f 2 | tr -d '[:cntrl:]' ")
-    )
-
-  (defun update-mode-line ()
-    (setq global-mode-string (concat "Avail: " (get-free-memory) "MB" " CPU: " (get-cpu-load) "%%"))
-    )
-#+END_SRC
-
-Następnie wkładamy to do =modeline'a= co 10 sekund(?)
-#+BEGIN_SRC emacs-lisp
-;; nie używalne
-;;    (run-at-time "10 sec" 10 'update-mode-line)
-#+END_SRC
-
-
 
 * Skrypty do pracy
 ** Budowanie Unita
@@ -1200,3 +1254,17 @@ Następnie wkładamy to do =modeline'a= co 10 sekund(?)
 
   (global-set-key [f9] 'unit/build)
 #+END_SRC
+
+
+
+* Auto =tangle= tego pliku przy zapisywaniu
+#+begin_src emacs-lisp
+  (defun rg/org-babel-tangle-config ()
+    (when (string-equal (buffer-file-name)
+                        (expand-file-name "~/.emacs.d/config.org"))
+      (let ((org-confirm-babel-evaluate nil))
+        (org-babel-tangle)))
+    )
+
+    (add-hook 'org-mode-hook (lambda() (add-hook 'after-save-hook #'rg/org-babel-tangle-config)))
+#+end_src

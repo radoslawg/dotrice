@@ -1,17 +1,5 @@
-(require 'package)
-(setq package-enable-at-startup nil)
-(setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-;;                         ("marmalade" . "https://marmalade-repo.org/packages/")
-                         ("melpa" . "https://melpa.org/packages/")
-                         ("org" . "http://orgmode.org/elpa/")))
-(package-initialize)
-
-;;(package-refresh-contents)  ;; meh..
-
-;;(unless (package-installed-p 'use-package)
-;;  (package-install 'use-package))
-
-(org-babel-load-file (expand-file-name "~/.emacs.d/config.org"))
+;;(org-babel-load-file (expand-file-name "~/.emacs.d/config.org"))
+(load "~/.emacs.d/config.el")
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -19,13 +7,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   (quote
-    ("a24c5b3c12d147da6cef80938dca1223b7c7f70f2f382b26308eba014dc4833a" "b9e9ba5aeedcc5ba8be99f1cc9301f6679912910ff92fdf7980929c2fc83ab4d" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "84d2f9eeb3f82d619ca4bfffe5f157282f4779732f48a5ac1484d94d5ff5b279" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
+   '("990e24b406787568c592db2b853aa65ecc2dcd08146c0d22293259d400174e37" "730a87ed3dc2bf318f3ea3626ce21fb054cd3a1471dcd59c81a4071df02cb601" "5b809c3eae60da2af8a8cfba4e9e04b4d608cb49584cb5998f6e4a1c87c057c4" "e6ff132edb1bfa0645e2ba032c44ce94a3bd3c15e3929cdf6c049802cf059a2a" "e6df46d5085fde0ad56a46ef69ebb388193080cc9819e2d6024c9c6e27388ba9" "5f824cddac6d892099a91c3f612fcf1b09bb6c322923d779216ab2094375c5ee" default))
  '(package-selected-packages
-   (quote
-    (ahk-mode iedit helm-posframe abl-mode virtualenvwrapper company-quickhelp material-theme blacken py-autopep8 python-mode company-jedi rainbow-delimiters rainbow-delimeters multiple-cursors projectile omnisharp ox-hugo emojify auto-package-update csharp-mode yasnippet-snippets counsel nyan-mode gruvbox-theme neotree nord-theme nord expand-region hungry-delete popup-kill-ring symon dmenu diminish spaceline spacemacs-theme highlight-symbol jedi flycheck auto-complete magit powershell undo-tree swiper ace-window org zenburn-theme yasnippet which-key use-package try org-bullets helm beacon)))
- '(winner-mode t))
-(put 'dired-find-alternate-file 'disabled nil)
+   '(all-the-icons-dired dired-single visual-fill-column visual-fill visual-fill-mode all-the-icons-ivy doom-tomorrow doom-themes helpful zenburn-theme monokai-theme org elpy company-jedi jedi doom-modeline omnisharp yasnippet-snippets which-key use-package undo-tree tsc try symon rainbow-delimiters pyvenv py-autopep8 projectile powershell posframe ox-hugo org-reverse-datetree org-cliplink org-bullets nyan-mode neotree multiple-cursors minions markdown-mode magit iedit highlight-symbol helm gruber-darker-theme flycheck f expand-region emojify dmenu diminish deferred dashboard counsel company-quickhelp blacken beacon auto-package-update auto-complete all-the-icons ahk-mode ace-window)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
